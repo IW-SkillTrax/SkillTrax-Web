@@ -1,0 +1,5 @@
+
+.selection-list {
+    max-height: 415px;
+    overflow: auto;
+}

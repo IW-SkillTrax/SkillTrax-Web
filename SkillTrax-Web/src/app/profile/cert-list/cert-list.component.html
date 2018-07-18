@@ -1,0 +1,22 @@
+<div>
+  <button [disabled]="selectedCertIds.length == 0" (click)="addCerts()" mat-button color="primary">Add Certifications</button>
+  <mat-form-field>
+    <mat-select placeholder="Certification Category" multiple [(value)]="selectedCategoryIds" (selectionChange)="filterCerts()">
+      <mat-option *ngFor="let category of categories" value="{{category.id}}">
+        {{category.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> 
+  <mat-form-field >
+    <input matInput (input)="searchCerts($event.target.value)" placeholder="Search for a Certification">
+  </mat-form-field>
+</div> 
+<mat-card class="selection-list">
+  <mat-card-content>
+    <mat-selection-list [(ngModel)]="selectedCertIds">
+      <mat-list-option *ngFor="let cert of filteredCerts" value={{cert.id}}>
+        {{cert.name}} {{cert.category}}
+      </mat-list-option>
+    </mat-selection-list>   
+  </mat-card-content>
+</mat-card>

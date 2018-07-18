@@ -1,0 +1,68 @@
+<div class="example-container mat-elevation-z8">
+    <mat-table #table [dataSource]="dataSource">
+  
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let employee"> {{employee.employeeName}} </mat-cell>
+      </ng-container>
+  
+      <!-- Role Column -->
+      <ng-container matColumnDef="role">
+        <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+        <mat-cell *matCellDef="let employee"> {{employee.role}} </mat-cell>
+      </ng-container>
+  
+      <!-- Analytics Column -->
+      <ng-container matColumnDef="hasAnalytics">
+        <mat-header-cell *matHeaderCellDef> Analytics </mat-header-cell>
+        <mat-cell *matCellDef="let employee">
+            <mat-icon *ngIf="employee.hasAnalytics">check</mat-icon>
+        </mat-cell>
+      </ng-container>
+
+            <!-- Management Column -->
+        <ng-container matColumnDef="hasManagement">
+            <mat-header-cell *matHeaderCellDef> Management </mat-header-cell>
+            <mat-cell *matCellDef="let employee">
+              <mat-icon *ngIf="employee.hasManagement">check</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Tech Column -->
+        <ng-container matColumnDef="hasTechnology">
+            <mat-header-cell *matHeaderCellDef> Technology </mat-header-cell>
+            <mat-cell *matCellDef="let employee">
+              <mat-icon *ngIf="employee.hasTechnology">check</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Cert Column -->
+        <ng-container matColumnDef="certCount">
+            <mat-header-cell *matHeaderCellDef> Certs </mat-header-cell>
+            <mat-cell *matCellDef="let employee"> {{employee.certCount}} </mat-cell>
+        </ng-container>
+  
+      <!-- Expanded Content Column - The detail row is made up of this one column -->
+      <ng-container matColumnDef="expandedDetail">
+        <mat-cell *matCellDef="let detail"> 
+            <employee-detail [employee]="detail.employee"></employee-detail>
+        </mat-cell>
+      </ng-container> 
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"
+              matRipple 
+              class="element-row" 
+              [class.expanded]="expandedEmployee == row"
+              (click)="expandedEmployee = row"></mat-row>
+      <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+              [@detailExpand]="row.employee == expandedEmployee ? 'expanded' : 'collapsed'"
+              style="overflow: hidden"> 
+      </mat-row>
+    </mat-table>
+  </div>
+
