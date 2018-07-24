@@ -1,9 +1,9 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { Employee } from '../../core/models/employee.model';
-import { Certification } from '../../core/models/certification.model';
-import { Skill } from '../../core/models/skill.model';
+import { Employee } from '../../Shared/models/employee.model';
+import { Certification } from '../../Shared/models/certification.model';
+import { Skill } from '../../Shared/models/skill.model';
 import { Filter } from '../models/filter.model';
-
+import { EmployeeService } from '../../Shared/services/employee.service';
 
 @Component({
   selector: 'app-home',
@@ -12,21 +12,39 @@ import { Filter } from '../models/filter.model';
 })
 export class HomeComponent implements OnInit {
 
-  employees: Employee[];
+  employees: any;
   skills: Skill[];
   certifications: Certification[];
 
   filters: Filter[];
   filteredEmployees: Employee[];
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private employeeService: EmployeeService) { }
 
   ngOnInit() {
-    
+    console.log("ngOnInit start");
+    //this.getEmployees();
+    console.log("ngOnInit end");
   }
+
+  getEmployees()
+  {
+    this.employeeService.getEmployees().subscribe(
+      data => {this.employees = data},
+      err => console.error(err),
+      () => console.log("Employees Loaded")
+    );
+  }
+
+
+
+
+
+
+
   viewDetails()
   {
-    console.log("detailView")
+   // console.log(this.employees);
   }
   addFilter()
   {

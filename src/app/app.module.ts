@@ -4,11 +4,11 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-import {CoreModule} from './core/core.module';
-import {EmployeeModule} from './employee/employee.module';
-import { RouterModule } from '../../node_modules/@angular/router';
 
-import { NavComponent } from './nav/nav.component';
+import {EmployeeModule} from './employee/employee.module';
+import { RouterModule } from '@angular/router';
+
+import { NavComponent } from './Shared/nav/nav.component';
 import { appRoutes } from './routes';
 
 
@@ -23,7 +23,7 @@ import { appRoutes } from './routes';
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    CoreModule,
+    
     EmployeeModule
   ],
   providers: [],
