@@ -1,6 +1,6 @@
 <nav class="navbar is-blue" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="https://bulma.io">
+            <a class="navbar-item" [routerLink] = "['Home']">
                 <h2 class="is-size-2 text-white has-text-weight-semibold">SkillTrax</h2>
             </a>
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
@@ -11,18 +11,17 @@
         </div>
         <div class="navbar-menu">
                 <div class="navbar-end">
-                        <a class="navbar-item text-white" routerLink="home">
-                            Home
+                        <a class="navbar-item text-white" [routerLink]="['Home']">
+                                <h3 class="is-size-4">Home</h3>
                         </a>  
-                        <a class="navbar-item text-white" routerLink="profile"> 
-                            Profile
+                        <a class="navbar-item text-white" [routerLink]="['Profile']"> 
+                                <h3 class="is-size-4">Profile</h3>
                         </a>
-                        <a class="navbar-item text-white">
-                                Skills
+                        <a class="navbar-item text-white" style="margin-right: 50px">
+                                <h3 class="is-size-4">Admin</h3>
                         </a>  
-                        <a class="navbar-item text-white">
-                                Certifications
-                        </a>   
+                           
                 </div>
         </div>
 </nav>
+

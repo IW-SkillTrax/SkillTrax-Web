@@ -1,0 +1,44 @@
+$gray: rgb(217,217,217);
+
+
+.boxey {
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+    color: #4a4a4a;
+    display: block;
+    padding: 0.25rem;
+    padding-left: 1.5rem;
+    margin: 8px;
+}
+.boxey:hover{
+background-color: $gray;
+}
+
+.header{
+    margin-left: 50px;
+    margin-bottom: 40px;
+}
+.employee-list{
+    margin-top: 50px;
+}
+
+.is-blue {
+    background-color: rgb(12,73,156);
+}
+.is-dark-blue {
+    background-color: rgb(0,32,96);
+}
+.is-light-blue {
+background-color: rgb(91, 155, 213);
+}
+.is-gray{
+    background-color: rgb(217,217,217);
+}
+.text-white
+{
+    color: rgb(255,255,255);
+}
+.text-blue{
+    color: rgb(12,73,156);
+}

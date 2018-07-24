@@ -7,13 +7,16 @@ import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
 import {EmployeeModule} from './employee/employee.module';
 import { RouterModule } from '../../node_modules/@angular/router';
-import {appRoutes} from './routes';
+
+import { NavComponent } from './nav/nav.component';
+import { appRoutes } from './routes';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavComponent
    
 
   ],

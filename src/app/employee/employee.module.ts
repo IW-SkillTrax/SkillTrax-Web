@@ -6,11 +6,14 @@ import {employeeRoutes} from './employee.routes';
 
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(employeeRoutes)],
+    RouterModule.forChild(employeeRoutes),
+    CoreModule
+  ],
   declarations:[
      HomeComponent,
      ProfileComponent
