@@ -1,4 +1,9 @@
 export class Filter {
     Name: string;
-    catagory: string;
+    Catagory: string;
+  
+    constructor(name:string, cat: string){
+        this.Name = name;
+        this.Catagory = cat;
+    }
 }

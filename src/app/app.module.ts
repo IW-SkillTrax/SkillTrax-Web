@@ -10,6 +10,12 @@ import { RouterModule } from '@angular/router';
 
 import { NavComponent } from './Shared/nav/nav.component';
 import { appRoutes } from './routes';
+import { EmployeeService } from './Shared/services/employee.service';
+import { HttpClientModule } from '../../node_modules/@angular/common/http';
+import { SkillService } from './Shared/services/skill.service';
+import { CertificationService } from './Shared/services/certification.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RoleService } from './Shared/services/role.service';
 
 
 
@@ -17,16 +23,15 @@ import { appRoutes } from './routes';
   declarations: [
     AppComponent,
     NavComponent
-   
-
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    
-    EmployeeModule
+    EmployeeModule,
+    HttpClientModule,
+    NgbModule
   ],
-  providers: [],
+  providers: [EmployeeService, SkillService, CertificationService, RoleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

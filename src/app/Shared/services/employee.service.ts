@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Employee } from '../models/employee.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,11 @@ export class EmployeeService {
 
   getEmployees()
   {
+    
     //url will be: https://localhost:44346/Employee/
     let url = this.host + this.controller;
-    return this.http.get(url)
+    return this.http.get(url);
+   
   }
   getEmployee(id: number)
   {
