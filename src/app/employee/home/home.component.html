@@ -1,6 +1,11 @@
-<h1>Hello world</h1>
-<button class="btn btn-primary" (click) = getFilters()>getFilters</button>
-<app-employee-list></app-employee-list>
+<h1>Employee Home</h1>
+<div class="container">
 
 
+    <ul style="list-style-type: none">
+        <li *ngFor="let person of employees">
+                <app-employee-list-item [employee] = "person"></app-employee-list-item>
+        </li>
+    </ul>
+</div>
 

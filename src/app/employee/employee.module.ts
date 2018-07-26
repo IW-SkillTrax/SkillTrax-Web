@@ -8,7 +8,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
-import { EmployeeListComponent } from './Home/Employee-List/employee-list.component';
+import { EmployeeListItemComponent } from './home/employee-list-item/employee-list-item.component';
+
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { EmployeeListComponent } from './Home/Employee-List/employee-list.compon
   declarations:[
      HomeComponent,
      ProfileComponent,
-     EmployeeListComponent
+     EmployeeListItemComponent,
+    
   ],
   providers:[]
   

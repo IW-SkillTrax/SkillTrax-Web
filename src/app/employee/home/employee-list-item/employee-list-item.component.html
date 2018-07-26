@@ -1,0 +1,40 @@
+<button class="accordion" (click) = togglePanel()><h4>{{employee.firstName}} {{employee.lastName}}</h4></button>
+<div [hidden] = "!isOpen" class="panel">
+    <ngb-tabset justify="fill">
+        <ngb-tab>
+            <ng-template ngbTabTitle><b>About</b></ng-template>
+          <ng-template ngbTabContent>
+            <div class="container">
+              <div class="col-xs-6">
+                  <h4>{{employee.firstName}} {{employee.lastName}}</h4>
+                  <h6>Email: {{employee.adUniqueIdentifier}}</h6>
+                  <h6>Phone: 555-555-5555</h6>
+              </div>
+              <div class="col-xs-6">
+                <h5>Role:</h5>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+          <ng-template ngbTabTitle><b>Skills</b></ng-template>
+          <ng-template ngbTabContent>
+            <ul>
+              <li *ngFor="let skill of employee.skills">
+                {{skill.skillName}}
+              </li>
+            </ul>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+            <ng-template ngbTabTitle><b>Certifications</b></ng-template>
+          <ng-template ngbTabContent>
+              <ul>
+                  <li *ngFor="let cert of employee.certifications">
+                    {{cert.certificationName}}
+                  </li>
+                </ul>
+           </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+</div>

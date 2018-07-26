@@ -7,6 +7,7 @@ import { EmployeeService } from '../../Shared/services/employee.service';
 import { SkillService } from '../../Shared/services/skill.service';
 import { CertificationService } from '../../Shared/services/certification.service';
 import { RoleService } from '../../Shared/services/role.service';
+import { FilterService } from '../../Shared/services/filter.service';
 
 
 @Component({
@@ -16,12 +17,12 @@ import { RoleService } from '../../Shared/services/role.service';
 })
 export class HomeComponent implements OnInit {
 
-  employees: any;
+  employees: Array<Employee>;
   skills: any;
   certifications: any;
   roles: any;
   
-  filters: Array<Filter> = new Array() as Array<Filter>;
+  filters: any;
   appliedFilters: Array<Filter> = new Array() as Array<Filter>;
   filteredEmployees: Array<Employee> = new Array() as Array<Employee>;
 
@@ -29,40 +30,33 @@ export class HomeComponent implements OnInit {
     private employeeService: EmployeeService,
     private skillService: SkillService,
     private certificationService: CertificationService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private filterService: FilterService
   ) { }
 
   ngOnInit() {
-    console.log("ngOnInit start");
-    this.getRoles();
-    this.getEmployees();
-    this.getCertifications();
-    this.getSkills();
-    console.log("ngOnInit end");
+  this.getData();
+  
   }
+
+getData(){
+this.getEmployees();
+this.getSkills();
+this.getCertifications();
+this.getRoles();
+this.getFilters();
+}
+
 getFilters(){
-for(let employee of this.employees){
-  let name: string = employee.firstName + " " + employee.lastName;
-  let filter = new Filter (name, "Person")
-  this.filters.push(filter);
-}
-for(let skill of this.skills){
-  let filter = new Filter (skill.skillName, "Skill")
-  this.filters.push(filter);
-}
-for(let certification of this.certifications){
-  let filter = new Filter (certification.certificationName, "Certification")
-  this.filters.push(filter);
-}
-for(let role of this.roles){
-  let filter = new Filter (role.roleName, "Role")
-  this.filters.push(filter);
-}
-console.log(this.filters);
+this.filterService.getFilters().subscribe(
+  data => {this.filters = data},
+  err => console.error(err),
+  () => console.log("Filters Loaded", this.filters)
+)
 }
   getEmployees(){
     this.employeeService.getEmployees().subscribe(
-      data => {this.employees = data},
+      data => {this.employees = data as Array<Employee>},
       err => console.error(err),
       () => console.log("Employees Loaded", this.employees)
     );

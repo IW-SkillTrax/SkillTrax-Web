@@ -16,6 +16,7 @@ import { SkillService } from './Shared/services/skill.service';
 import { CertificationService } from './Shared/services/certification.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RoleService } from './Shared/services/role.service';
+import { FilterService } from './Shared/services/filter.service';
 
 
 
@@ -29,9 +30,9 @@ import { RoleService } from './Shared/services/role.service';
     RouterModule.forRoot(appRoutes),
     EmployeeModule,
     HttpClientModule,
-    NgbModule
+    NgbModule.forRoot()
   ],
-  providers: [EmployeeService, SkillService, CertificationService, RoleService],
+  providers: [EmployeeService, SkillService, CertificationService, RoleService, FilterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
