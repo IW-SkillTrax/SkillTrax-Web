@@ -9,14 +9,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { EmployeeListItemComponent } from './home/employee-list-item/employee-list-item.component';
-
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(employeeRoutes),
-    NgbModule
+    NgbModule,
+    FormsModule
    
   ],
   declarations:[

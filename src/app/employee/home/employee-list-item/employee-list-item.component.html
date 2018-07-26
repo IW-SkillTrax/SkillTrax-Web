@@ -1,6 +1,8 @@
+
+
 <button class="accordion" (click) = togglePanel()><h4>{{employee.firstName}} {{employee.lastName}}</h4></button>
 <div [hidden] = "!isOpen" class="panel">
-    <ngb-tabset justify="fill">
+    <ngb-tabset justify="center">
         <ngb-tab>
             <ng-template ngbTabTitle><b>About</b></ng-template>
           <ng-template ngbTabContent>
@@ -11,7 +13,7 @@
                   <h6>Phone: 555-555-5555</h6>
               </div>
               <div class="col-xs-6">
-                <h5>Role:</h5>
+                <h5>Role: {{employee.roleName}}</h5>
               </div>
             </div>
           </ng-template>

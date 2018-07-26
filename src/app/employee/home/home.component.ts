@@ -1,14 +1,27 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Employee } from '../../Shared/models/employee.model';
 import { Certification } from '../../Shared/models/certification.model';
 import { Skill } from '../../Shared/models/skill.model';
 import { Filter } from '../models/filter.model';
+
 import { EmployeeService } from '../../Shared/services/employee.service';
 import { SkillService } from '../../Shared/services/skill.service';
 import { CertificationService } from '../../Shared/services/certification.service';
 import { RoleService } from '../../Shared/services/role.service';
 import { FilterService } from '../../Shared/services/filter.service';
 
+import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import {Observable, Subject, merge} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
+
+const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
+  'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
+  'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
+  'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
+  'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+  'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico', 'Rhode Island',
+  'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Islands', 'Virginia',
+  'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
 
 @Component({
   selector: 'app-home',
@@ -25,7 +38,7 @@ export class HomeComponent implements OnInit {
   filters: any;
   appliedFilters: Array<Filter> = new Array() as Array<Filter>;
   filteredEmployees: Array<Employee> = new Array() as Array<Employee>;
-
+  public model: any;  
   constructor(
     private employeeService: EmployeeService,
     private skillService: SkillService,
@@ -38,6 +51,15 @@ export class HomeComponent implements OnInit {
   this.getData();
   
   }
+  
+
+  search = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? []
+        : this.filters.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    );
 
 getData(){
 this.getEmployees();
@@ -49,7 +71,7 @@ this.getFilters();
 
 getFilters(){
 this.filterService.getFilters().subscribe(
-  data => {this.filters = data},
+  data => {this.filters = data as Array<Filter>},
   err => console.error(err),
   () => console.log("Filters Loaded", this.filters)
 )
@@ -64,7 +86,7 @@ this.filterService.getFilters().subscribe(
 
 getSkills(){
   this.skillService.getSkills().subscribe(
-    data => {this.skills = data},
+    data => {this.skills = data as Array<Skill>},
     err => console.error(err),
     () => console.log("Skills Loaded", this.skills)
   );
@@ -72,7 +94,7 @@ getSkills(){
 
 getCertifications(){
   this.certificationService.getCertifications().subscribe(
-    data => {this.certifications = data},
+    data => {this.certifications = data as Array<Certification>},
     err => console.error(err),
     () => console.log("Certifications Loaded", this.certifications)
   );

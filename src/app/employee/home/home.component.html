@@ -1,10 +1,38 @@
 <h1>Employee Home</h1>
 <div class="container">
-
-
-    <ul style="list-style-type: none">
+<!--Filters areah-->
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-1">
+                            <label>Filters: </label>
+                    </div>
+                    <div class="col-xs-1">
+                        <span class="tag is-blue text-white">FilterName</span>
+                    </div>
+                    <div class="col-xs-1">
+                        <span class="tag is-light-blue text-white">FilterName</span>
+                    </div>
+                    <div class="col-xs-1">
+                        <span class="tag is-dark-blue text-white">FilterName</span>
+                    </div>
+                    <div class="col-xs-1">
+                        <span class="tag is-gray text-white">FilterName</span>
+                    </div>
+                </div>
+                
+            </div>
+            <!--TypeAhead stuff-->
+            <input placeholder="Search for a Filter" id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"/>
+        </div>
+    </div>
+        
+<div style="margin:100px"></div>
+<!--list if employees accordion-->
+    <ul class="people-list">
         <li *ngFor="let person of employees">
-                <app-employee-list-item [employee] = "person"></app-employee-list-item>
+            <app-employee-list-item [employee] ="person"></app-employee-list-item>
         </li>
     </ul>
 </div>
