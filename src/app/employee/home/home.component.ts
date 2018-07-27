@@ -13,15 +13,8 @@ import { FilterService } from '../../Shared/services/filter.service';
 import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, Subject, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
-const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
-  'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
-  'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
-  'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
-  'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-  'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico', 'Rhode Island',
-  'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Islands', 'Virginia',
-  'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
 
 @Component({
   selector: 'app-home',
@@ -31,19 +24,16 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 export class HomeComponent implements OnInit {
 
   employees: Array<Employee>;
-  skills: any;
-  certifications: any;
-  roles: any;
-  
-  filters: any;
-  appliedFilters: Array<Filter> = new Array() as Array<Filter>;
   filteredEmployees: Array<Employee> = new Array() as Array<Employee>;
-  public model: any;  
+ 
+  filters: any;
+
+  appliedFilters: Array<Filter>;
+
+  public searchBox: any;  
+
   constructor(
     private employeeService: EmployeeService,
-    private skillService: SkillService,
-    private certificationService: CertificationService,
-    private roleService: RoleService,
     private filterService: FilterService
   ) { }
 
@@ -51,21 +41,21 @@ export class HomeComponent implements OnInit {
   this.getData();
   
   }
-  
 
+  
+//typeahead functions
   search = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 2 ? []
+      map(term => term === '' ? []
         : this.filters.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     );
 
+  formatter = (x: {name: string}) => x.name;
+
+  //http service callers
 getData(){
 this.getEmployees();
-this.getSkills();
-this.getCertifications();
-this.getRoles();
 this.getFilters();
 }
 
@@ -84,54 +74,41 @@ this.filterService.getFilters().subscribe(
     );
   }
 
-getSkills(){
-  this.skillService.getSkills().subscribe(
-    data => {this.skills = data as Array<Skill>},
-    err => console.error(err),
-    () => console.log("Skills Loaded", this.skills)
-  );
-}
 
-getCertifications(){
-  this.certificationService.getCertifications().subscribe(
-    data => {this.certifications = data as Array<Certification>},
-    err => console.error(err),
-    () => console.log("Certifications Loaded", this.certifications)
-  );
-}
-getRoles(){
-  this.roleService.getRoles().subscribe(
-    data => {this.roles = data},
-    err => console.error(err),
-    () => console.log("Roles loaded", this.roles)
-  );
-}
 
-applicableFilter(filter:Filter, employee: Employee): boolean {
+
+//filtering functions
+
+
+applicableFilter(filter:Filter, employee: any): boolean {
 let applies = false;
 
 if(filter.Catagory == "Person"){
-  //not sure how this should go
+  if(filter.Name == employee.firstName + " " + employee.lastName)
+  applies = true;
+  
 }
 
 else if(filter.Catagory == "Skill"){
-  for(let skill of employee.Skills){
-    if(skill.SkillName == filter.Name){
+  for(let skill of employee.skills){
+    if(skill.skillName == filter.Name){
       applies = true;
+      break;
     }
   }
 }
 
 else if(filter.Catagory == "Certification"){
-  for(let certification of employee.Certifications){
-    if(certification.CertificationName == filter.Name){
+  for(let certification of employee.certifications){
+    if(certification.certificationName == filter.Name){
       applies = true;
+      break;
     }
   }
 }
 else if(filter.Catagory == "Role"){
   //could change depending on what Judy says about roles
-  if(employee.Role == filter.Name){
+  if(employee.roleName == filter.Name){
     applies = true;
   }
 }
@@ -140,32 +117,50 @@ return applies;
 
 filterEmployees()
 {
-  for(let i =0; i < this.filteredEmployees.length; i++)
+  for(let i = 0; i < this.filteredEmployees.length; i++)
   {
     for(let filter of this.appliedFilters)
     {
       if(!this.applicableFilter(filter, this.filteredEmployees[i]))
       {
         this.filteredEmployees.splice(i,1);
+        i--;
       }
     }
   }
 }
-  addFilter()
-  {
-     if(this.filteredEmployees == null)
-    {
-      this.filteredEmployees = this.employees;
+addFilter(input){
+  
+  if(this.filteredEmployees == null || this.filteredEmployees.length == 0){
+      this.filteredEmployees = this.employees.slice();
     }
-   //TODO: add filter to filters
-
+    if(this.appliedFilters == null){
+      this.appliedFilters= new Array() as Array<Filter>;
+    }
+  let filter = new Filter(input.name, input.catagory);
+  
+  //TODO: no double filters!!!
+  if(this.appliedFilters.indexOf(filter) == -1){
+    this.appliedFilters.push(filter);
     this.filterEmployees();
   }
+ 
+ console.log(this.appliedFilters);
+}
 
-  removeFilter()
-  {
-    //TODO: remove specified filter from filters
-   this.filteredEmployees = this.employees;
-   this.filterEmployees();
+  removeFilter(filter:Filter){
+    for(let i = 0; i < this.appliedFilters.length; i++){
+      if(filter.Name == this.appliedFilters[i].Name){
+        this.appliedFilters.splice(i,1);
+      }
+    }
+    if(this.appliedFilters.length < 1){
+      this.filteredEmployees.length = 0;
+    }
+    else{
+      this.filteredEmployees = this.employees;
+      this.filterEmployees();
+    }
   }
+
 }

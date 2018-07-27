@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { EmployeeListItemComponent } from './home/employee-list-item/employee-list-item.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     RouterModule.forChild(employeeRoutes),
     NgbModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
    
   ],
   declarations:[
