@@ -117,6 +117,7 @@ return applies;
 
 filterEmployees()
 {
+ 
   for(let i = 0; i < this.filteredEmployees.length; i++)
   {
     for(let filter of this.appliedFilters)
@@ -125,12 +126,13 @@ filterEmployees()
       {
         this.filteredEmployees.splice(i,1);
         i--;
+        break;
       }
     }
   }
 }
 addFilter(input){
-  
+ 
   if(this.filteredEmployees == null || this.filteredEmployees.length == 0){
       this.filteredEmployees = this.employees.slice();
     }
@@ -138,7 +140,7 @@ addFilter(input){
       this.appliedFilters= new Array() as Array<Filter>;
     }
   let filter = new Filter(input.name, input.catagory);
-  
+
   //TODO: no double filters!!!
   if(this.appliedFilters.indexOf(filter) == -1){
     this.appliedFilters.push(filter);
@@ -161,6 +163,7 @@ addFilter(input){
       this.filteredEmployees = this.employees;
       this.filterEmployees();
     }
+    console.log(this.employees)
   }
 
 }

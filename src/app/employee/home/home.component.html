@@ -1,5 +1,5 @@
 <!--intro page-->
-<div class="jumbotron" *ngIf = "appliedFilters == null; else elseBlock" style ="height: 100vh;">
+<div class="jumbotron" *ngIf = "appliedFilters == null; else elseBlock" style ="height: 100vh; background:none;">
     <div class="container">
         <h1 class="text-center">Welcome to SkillTrax!</h1>
         <h4 class="text-center">The web app that tracks everyone's talents and abilities.</h4>
@@ -23,78 +23,89 @@
 
 
 
-
-
-
-
-
-
-
-
-<!--Employee Search-->
 <ng-template #elseBlock>
     <div class="page-header">
-        <h1>SkillTrax Home <small>Find what you're looking for!</small></h1>
+        <h1>SkillTrax <small>Find what you're looking for!</small></h1>
         <hr>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-10">
-                <div class="container">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3">
+                <div class="conatiner-fliud" style="margin-bottom: 25px;">
                     <div class="row">
                         <div class="col-xs-1">
-                            <label>Filters: </label>
+                                <label>Filters: </label>
                         </div>
                         <div class="col-xs-1" *ngFor="let filter of appliedFilters">
-                            <span [ngClass]="{
-                                'is-blue':filter.Catagory == 'Person',
-                                'is-light-blue':filter.Catagory == 'Skill',
-                                'is-dark-blue':filter.Catagory == 'Catagory',
-                                'is-gray':filter.Catagory == 'Role'
-                            }"  class="tag text-white"(click)= removeFilter(filter)>{{filter.Name}}</span>
+                           <span [ngClass] = "{
+                               'is-blue': filter.Catagory == 'Skill',
+                               'is-light-blue': filter.Catagory == 'Certification',
+                               'is-dark-blue': filter.Catagory == 'Person',
+                               'is-gray': filter.Catagory == 'Role'
+                                }" class=" tag text-white" (click) = removeFilter(filter)>{{filter.Name}} 
+                                <i class="far fa-times-circle" style="margin-left:4px;"></i>
+                            </span>
+                            
+                        </div>
+                    </div>
+                    <ng-template #rt let-r="result" let-t="term" >
+                            <div (click) = addFilter(r)>{{r.name}} - {{r.catagory}}</div>
+                    </ng-template>
+                        
+                    <input placeholder="Add a Filter" id="typeahead-template" type="text" class="form-control" [(ngModel)]="searchBox" [ngbTypeahead]="search" [resultTemplate]="rt"
+                    [inputFormatter]="formatter"/>
+                    <div style="margin:10px"></div>
+                    <div class="conatiner-fliud">
+                        <div class="row">
+                            <div class="col-xs-auto">
+                                <button class=" btn is-dark-blue text-white">Clear Filters</button>
+                            </div>
+                            <div class="col-xs-auto">
+                                <button class=" btn is-blue text-white">Show All</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            <!--TypeAhead box stuff-->
-           
-            <!--This is the template for the results in the typeahead box-->
 
-            <ng-template #rt let-r="result" let-t="term" >
-                <div (click) = addFilter(r)>{{r.name}} - {{r.catagory}}</div>
-              </ng-template>
 
-              <!--actual typeahead Box-->
-                <input placeholder="Add a Filter" id="typeahead-template" type="text" class="form-control" [(ngModel)]="searchBox" [ngbTypeahead]="search" [resultTemplate]="rt"
-            [inputFormatter]="formatter"/>
-                
-        </div>
-    </div>
 
-        
-    <div style="margin:100px"></div>
-    <hr>
-<!--list of employees accordion-->
-    <div *ngIf="filteredEmployees.length == 0; else EmployeeList">
-        <div *ngIf="appliedFilters.length == 0; else NoEmployees">
-           <div class="alert alert-info">
-               <p><strong>Uh Oh!</strong> You haven't applied any filters. Try searching for one!</p>
-           </div>
-        </div>
-        <ng-template #NoEmployees>
-            <div class="alert alert-warning">
-                <p><strong>Oh No!</strong> Nobody matches all the filters you have applied. Try removing a few!</p>
+
+
             </div>
-        </ng-template>
-    </div>
-    <ng-template #EmployeeList>
-        <ul class="people-list" #EmployeeList>
-                <li *ngFor="let person of filteredEmployees">
-                    <app-employee-list-item [employee] ="person"></app-employee-list-item>
-                </li>
-            </ul>
-    </ng-template>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-6">
+                    <div class="card listCard">
+                        <div class="card-body">
+                            <h4>Employee matches:</h4>
+                            <div *ngIf="filteredEmployees.length == 0; else EmployeeList">
+                                    
+                                <div *ngIf="appliedFilters.length == 0; else NoEmployees">
+                                    <p class="errorMessage"><strong>Uh Oh!</strong> Looks like you haven't applied any filters. Try applying one to see some results!</p>
+                                    <div style="text-align:center;">
+                                        <i class="fas fa-users bigIcon"></i>
+                                    </div>
+                                </div>
+                                <ng-template #NoEmployees>
+                                    <p class="errorMessage"><strong>Oh No!</strong> Looks like you have too many applied filters. Try removing some to see some results!</p>
+                                    <div style="text-align:center;">
+                                        <i class="fas fa-users bigIcon"></i>
+                                    </div>
+                                </ng-template>
+                            </div>
+                            <ng-template #EmployeeList>
+                                <div style="margin:75px"></div>
+                                  
+                                <ul class="people-list" #EmployeeList>
+                                    <li *ngFor="let person of filteredEmployees">
+                                        <app-employee-list-item [employee] ="person"></app-employee-list-item>
+                                    </li>
+                                </ul>
+                            </ng-template>
+                        </div> 
+                    </div>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
     </div>
 </ng-template>
-   
-
-

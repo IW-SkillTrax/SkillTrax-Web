@@ -1,7 +1,27 @@
 
 
-<button class="accordion" (click) = togglePanel()><h4>{{employee.firstName}} {{employee.lastName}}</h4></button>
-<div [hidden] = "!isOpen" class="panel">
+<div class="accordion" (click) = togglePanel()>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-8">
+          <h4>{{employee.firstName}} {{employee.lastName}}</h4>
+      </div>
+      <div class="col-sm-1">
+    
+      </div>
+      <div class="col-sm-2">
+          <h4 *ngIf="isAdmin"><i class="far fa-edit"></i></h4>
+      </div>
+      <div class="col-sm-1">
+          <h4><i [ngClass]="{
+            'fas fa-caret-up': isOpen,
+            'fas fa-caret-down': !isOpen}">
+          </i></h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div [hidden] = "!isOpen" class="card">
     <ngb-tabset justify="center">
         <ngb-tab>
             <ng-template ngbTabTitle><b>About</b></ng-template>

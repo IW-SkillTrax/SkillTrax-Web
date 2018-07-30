@@ -1,19 +1,5 @@
 $gray: rgb(217,217,217);
 
-.boxey {
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-    color: #4a4a4a;
-    display: block;
-    padding: 0.25rem;
-    padding-left: 1.5rem;
-    margin: 8px;
-}
-.boxey:hover{
-background-color: $gray;
-}
-
 .header{
     margin-left: 50px;
     margin-bottom: 40px;
@@ -36,30 +22,20 @@ background-color: $gray;
     margin-left: 10px;
 
 }
-.delete{
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    background-color: rgb(255,255,255);
-    border: none;
-    border-radius: 290486px;
-    cursor: pointer;
-    pointer-events: auto;
-    display: inline-block;
-    flex-grow: 0;
-    flex-shrink: 0;
-    font-size: 0;
-    height: 15px;
-    max-height: 20px;
-    max-width: 20px;
-    min-height: 20px;
-    min-width: 20px;
-    outline: 0;
-    position: relative;
-    vertical-align: top;
-    width: 15px;
-    margin-left: 5px;
+.listCard{
+    height: 750px;
+    overflow-y: scroll;
 }
-
+.bigIcon{
+    text-shadow: 1px 1px 1px #ccc;
+    font-size: 1500%;
+    color: rgb(91, 155, 213);
+}
+.errorMessage{
+    text-align: center;
+    margin-bottom: 100px;
+    margin-top: 25px;
+}
 .people-list{
     list-style-type: none
 }

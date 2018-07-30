@@ -8,7 +8,9 @@ import { Employee } from '../../../Shared/models/employee.model';
 export class EmployeeListItemComponent implements OnInit {
 
 isOpen: boolean = false;
+isAdmin:boolean = true;
 @Input() employee: Employee;
+
 
   constructor() { }
 

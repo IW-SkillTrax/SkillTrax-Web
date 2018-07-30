@@ -4,18 +4,26 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link text-white" [routerLink] = "['Home']">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" [routerLink] = "['Profile']">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white" [routerLink]="['Admin']">Admin</a>
-        </li>
+        
       </ul>
-        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Logout</button>
+      
+      <ul class="navbar-nav mr-right">
+          <li class="nav-item active">
+              <a class="nav-link text-white" [routerLink] = "['Home']"><h5 class="text-white">Home</h5> <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" [routerLink] = "['Profile']"><h5 class="text-white">Profile</h5></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" [routerLink]="['Admin']"><h5 class="text-white">Admin</h5></a>
+            </li>
+            <li style="margin-left:50px;">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Logout</button>
+            </li>
+        </ul>
+        
     </div>
   </nav>
 
