@@ -1,19 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Employee } from '../../Shared/models/employee.model';
-import { Certification } from '../../Shared/models/certification.model';
-import { Skill } from '../../Shared/models/skill.model';
 import { Filter } from '../models/filter.model';
 
 import { EmployeeService } from '../../Shared/services/employee.service';
-import { SkillService } from '../../Shared/services/skill.service';
-import { CertificationService } from '../../Shared/services/certification.service';
-import { RoleService } from '../../Shared/services/role.service';
 import { FilterService } from '../../Shared/services/filter.service';
 
 import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
-import {Observable, Subject, merge} from 'rxjs';
-import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import {Observable} from 'rxjs';
+import {debounceTime,  map} from 'rxjs/operators';
+
 
 
 @Component({
@@ -147,7 +142,7 @@ addFilter(input){
     this.filterEmployees();
   }
  
- console.log(this.appliedFilters);
+ 
 }
 
   removeFilter(filter:Filter){
@@ -163,7 +158,16 @@ addFilter(input){
       this.filteredEmployees = this.employees;
       this.filterEmployees();
     }
-    console.log(this.employees)
+    
+  }
+
+  showAllEmployees(){
+    this.appliedFilters = [];
+    this.filteredEmployees = this.employees.slice();
+  }
+  clearFilters(){
+    this.appliedFilters = [];
+    this.filteredEmployees = [];
   }
 
 }

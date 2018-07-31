@@ -25,7 +25,7 @@
 
 <ng-template #elseBlock>
     <div class="page-header">
-        <h1>SkillTrax <small>Find what you're looking for!</small></h1>
+        <h1>SkillTrax Home <small>Find who you need!</small></h1>
         <hr>
     </div>
     <div class="container-fluid">
@@ -58,11 +58,11 @@
                     <div style="margin:10px"></div>
                     <div class="conatiner-fliud">
                         <div class="row">
-                            <div class="col-xs-auto">
-                                <button class=" btn is-dark-blue text-white">Clear Filters</button>
+                            <div class="col-sm-auto">
+                                <button class=" btn is-dark-blue text-white" (click) = clearFilters()>Clear Filters</button>
                             </div>
-                            <div class="col-xs-auto">
-                                <button class=" btn is-blue text-white">Show All</button>
+                            <div class="col-sm-auto ">
+                                <button class=" btn is-blue text-white" (click) = showAllEmployees()>Show All</button>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                             <div *ngIf="filteredEmployees.length == 0; else EmployeeList">
                                     
                                 <div *ngIf="appliedFilters.length == 0; else NoEmployees">
-                                    <p class="errorMessage"><strong>Uh Oh!</strong> Looks like you haven't applied any filters. Try applying one to see some results!</p>
+                                    <p class="errorMessage"><strong>Uh Oh!</strong> Looks like you haven't applied any filters. Try applying one to see some results, or click the show all button to view every employe.</p>
                                     <div style="text-align:center;">
                                         <i class="fas fa-users bigIcon"></i>
                                     </div>
