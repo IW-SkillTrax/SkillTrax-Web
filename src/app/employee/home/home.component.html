@@ -1,6 +1,9 @@
 <!--intro page-->
 <div class="jumbotron" *ngIf = "appliedFilters == null; else elseBlock" style ="height: 100vh; background:none;">
     <div class="container">
+            <div style="text-align: center; ">
+                    <i class="fas fa-users bigIcon"></i>
+                </div>
         <h1 class="text-center">Welcome to SkillTrax!</h1>
         <h4 class="text-center">The web app that tracks everyone's talents and abilities.</h4>
         <br>
@@ -11,8 +14,9 @@
                      
         <input placeholder="Search for a Person, Skill, Certification or Role" 
             id="typeahead-template" 
-            type="text" class="form-control" [(ngModel)]="searchBox" [ngbTypeahead]="search" [resultTemplate]="rt"
-            [inputFormatter]="formatter"/>
+            type="text" class="form-control" [(ngModel)]="searchBox1" [ngbTypeahead]="search" [resultTemplate]="rt"
+            [inputFormatter]="formatter" (keydown.enter) = enterAddFilter1()/>
+            
     </div>
 </div>
 
@@ -22,12 +26,9 @@
 
 
 
-
+<!--input Div-->
 <ng-template #elseBlock>
-    <div class="page-header">
-        <h1>SkillTrax Home <small>Find who you need!</small></h1>
-        <hr>
-    </div>
+    <div style="margin: 50px;"></div>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-1"></div>
@@ -53,16 +54,24 @@
                             <div (click) = addFilter(r)>{{r.name}} - {{r.catagory}}</div>
                     </ng-template>
                         
-                    <input placeholder="Add a Filter" id="typeahead-template" type="text" class="form-control" [(ngModel)]="searchBox" [ngbTypeahead]="search" [resultTemplate]="rt"
-                    [inputFormatter]="formatter"/>
+                    <input placeholder="Add a Filter" id="typeahead-template" type="text" class="form-control" [(ngModel)]="searchBox2" [ngbTypeahead]="search" [resultTemplate]="rt"
+                    [inputFormatter]="formatter" (focus) = clearSearchBox() (focusout) = clearSearchBox()  (keydown.enter) = enterAddFilter2()/>
                     <div style="margin:10px"></div>
                     <div class="conatiner-fliud">
                         <div class="row">
                             <div class="col-sm-auto">
-                                <button class=" btn is-dark-blue text-white" (click) = clearFilters()>Clear Filters</button>
+                                <button class=" btn is-dark-blue text-white" style="margin-bottom:25px;" (click) = clearFilters()>Clear Filters</button> 
                             </div>
                             <div class="col-sm-auto ">
                                 <button class=" btn is-blue text-white" (click) = showAllEmployees()>Show All</button>
+                            </div>
+                            <div class="col-sm-auto" >
+                                 
+                                <button type="button" class="btn btn-link" placement="bottom" container="body"
+                                   popoverTitle="SkillTrax Help"
+                                   ngbPopover="On this page you can search through a list of InfoWorks employees to see information about them and any skills or certifications they have. You can begin your search by either using  the search box in the top left or by clicking Show All. To use the sheach box effectivly,click in and start typeing the attribute you wish to look for, the autocomplete can help you find the attribute faster. Once you see it come up in autocomplete, either click the highlighted box or hit enter twice." >
+                                    Need Help?
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -71,7 +80,7 @@
 
 
 
-
+<!--Employee List div-->
             </div>
             <div class="col-lg-1"></div>
             <div class="col-lg-6">
@@ -81,7 +90,7 @@
                             <div *ngIf="filteredEmployees.length == 0; else EmployeeList">
                                     
                                 <div *ngIf="appliedFilters.length == 0; else NoEmployees">
-                                    <p class="errorMessage"><strong>Uh Oh!</strong> Looks like you haven't applied any filters. Try applying one to see some results, or click the show all button to view every employe.</p>
+                                    <p class="errorMessage"><strong>Uh Oh!</strong> Looks like you haven't applied any filters. Try applying one to see some results, or click the show all button to view every employee.</p>
                                     <div style="text-align:center;">
                                         <i class="fas fa-users bigIcon"></i>
                                     </div>

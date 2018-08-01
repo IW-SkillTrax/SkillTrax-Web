@@ -17,13 +17,18 @@ import { CertificationService } from './Shared/services/certification.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RoleService } from './Shared/services/role.service';
 import { FilterService } from './Shared/services/filter.service';
-
+import { AuthCallbackComponent } from './Auth/auth-callback/auth-callback.component';
+import { AuthService } from './Auth/auth.service';
+import { AuthGuardService } from './Auth/auth-guard.service';
+import { AdalService } from '../../node_modules/adal-angular4';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavComponent
+    NavComponent,
+    AuthCallbackComponent
+  
   ],
   imports: [
     BrowserModule,
@@ -32,7 +37,7 @@ import { FilterService } from './Shared/services/filter.service';
     HttpClientModule,
     NgbModule.forRoot()
   ],
-  providers: [EmployeeService, SkillService, CertificationService, RoleService, FilterService],
+  providers: [EmployeeService, SkillService, CertificationService, RoleService, FilterService, AuthService, AuthGuardService, AdalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

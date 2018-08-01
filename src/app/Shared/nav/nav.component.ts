@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
+import { UserService } from '../services/user.service';
 @Component({
   selector: 'nav-bar',
   templateUrl: './nav.component.html',
@@ -8,9 +9,12 @@ import {Router, RouterLink} from '@angular/router';
 })
 export class NavComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private userService: UserService) { }
+  isCollapsed:boolean = true;
+  User: any;
+    ngOnInit() {
+      this.User = this.userService.getCurrentUser();
+      console.log("Nav User", this.User);
   }
 
 }

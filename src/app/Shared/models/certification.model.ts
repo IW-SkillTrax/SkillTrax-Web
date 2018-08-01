@@ -1,7 +1,7 @@
-import { Deserializable } from "./deserializable.model";
 
 
-export class Certification implements Deserializable{
+
+export class Certification {
     CertificationName:       string;
     CertificationId:         number;
     CertCatagoryId:          number;

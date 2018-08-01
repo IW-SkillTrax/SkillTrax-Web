@@ -1,8 +1,8 @@
-import { Deserializable } from "./deserializable.model";
 
 
 
-export class Skill implements Deserializable{
+
+export class Skill{
     SkillId:         number;
     SkillName:       string;
     SolutionName:   string;

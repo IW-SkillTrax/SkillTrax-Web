@@ -5,9 +5,10 @@ import { Filter } from '../models/filter.model';
 import { EmployeeService } from '../../Shared/services/employee.service';
 import { FilterService } from '../../Shared/services/filter.service';
 
-import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+
 import {Observable} from 'rxjs';
 import {debounceTime,  map} from 'rxjs/operators';
+import { UserService } from '../../Shared/services/user.service';
 
 
 
@@ -21,20 +22,20 @@ export class HomeComponent implements OnInit {
   employees: Array<Employee>;
   filteredEmployees: Array<Employee> = new Array() as Array<Employee>;
  
-  filters: any;
-
-  appliedFilters: Array<Filter>;
-
-  public searchBox: any;  
-
+filters:        any;
+appliedFilters: Array<Filter>;
+searchBox2:    any; 
+searchBox1:    any; 
+User:          any;
   constructor(
     private employeeService: EmployeeService,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
   this.getData();
-  
+  this.User = this.userService.getCurrentUser();
   }
 
   
@@ -69,11 +70,7 @@ this.filterService.getFilters().subscribe(
     );
   }
 
-
-
-
 //filtering functions
-
 
 applicableFilter(filter:Filter, employee: any): boolean {
 let applies = false;
@@ -127,7 +124,7 @@ filterEmployees()
   }
 }
 addFilter(input){
- 
+  console.log("employees",this.employees);
   if(this.filteredEmployees == null || this.filteredEmployees.length == 0){
       this.filteredEmployees = this.employees.slice();
     }
@@ -135,14 +132,11 @@ addFilter(input){
       this.appliedFilters= new Array() as Array<Filter>;
     }
   let filter = new Filter(input.name, input.catagory);
-
-  //TODO: no double filters!!!
-  if(this.appliedFilters.indexOf(filter) == -1){
+  if(this.appliedFilters.filter(f => f.Name == filter.Name).length == 0){
     this.appliedFilters.push(filter);
     this.filterEmployees();
+    console.log("employees",this.employees);
   }
- 
- 
 }
 
   removeFilter(filter:Filter){
@@ -155,10 +149,9 @@ addFilter(input){
       this.filteredEmployees.length = 0;
     }
     else{
-      this.filteredEmployees = this.employees;
+      this.filteredEmployees = this.employees.slice();
       this.filterEmployees();
     }
-    
   }
 
   showAllEmployees(){
@@ -170,4 +163,22 @@ addFilter(input){
     this.filteredEmployees = [];
   }
 
+  clearSearchBox(){
+    this.searchBox2 = '';
+  }
+
+//TODO: figure out how to make these functions into one function that handles both search boxes
+  enterAddFilter2(){
+    
+    if(this.searchBox2.name != undefined){
+      this.addFilter(this.searchBox2);
+    }
+  }
+  enterAddFilter1(){
+    
+    
+    if(this.searchBox1.name != undefined){
+      this.addFilter(this.searchBox1);
+    }
+  }
 }

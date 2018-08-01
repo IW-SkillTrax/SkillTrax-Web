@@ -1,9 +1,9 @@
 import { Skill} from './skill.model';
 import { Certification } from './certification.model';
-import {Deserializable} from './deserializable.model';
 
 
-export class Employee implements Deserializable{
+
+export class Employee {
     FirstName:      string;
     LastName:       string;
     EmployeeId:             number;
