@@ -58,15 +58,13 @@ this.getFilters();
 getFilters(){
 this.filterService.getFilters().subscribe(
   data => {this.filters = data as Array<Filter>},
-  err => console.error(err),
-  () => console.log("Filters Loaded", this.filters)
+  err => console.error(err)
 )
 }
   getEmployees(){
     this.employeeService.getEmployees().subscribe(
       data => {this.employees = data as Array<Employee>},
-      err => console.error(err),
-      () => console.log("Employees Loaded", this.employees)
+      err => console.error(err)
     );
   }
 
@@ -124,7 +122,7 @@ filterEmployees()
   }
 }
 addFilter(input){
-  console.log("employees",this.employees);
+  
   if(this.filteredEmployees == null || this.filteredEmployees.length == 0){
       this.filteredEmployees = this.employees.slice();
     }
@@ -135,7 +133,7 @@ addFilter(input){
   if(this.appliedFilters.filter(f => f.Name == filter.Name).length == 0){
     this.appliedFilters.push(filter);
     this.filterEmployees();
-    console.log("employees",this.employees);
+    
   }
 }
 

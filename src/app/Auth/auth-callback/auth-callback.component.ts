@@ -13,11 +13,13 @@ export class AuthCallbackComponent implements OnInit {
    constructor(private _router:Router, private _authService:AuthService, private _zone:NgZone, private _activatedRoute:ActivatedRoute) { }
 
    ngOnInit() {
+     
     this._authService.completeAuthentication()
     .then(() => {
-      this._router.navigate([''])
+     
+      this._router.navigate(['/'])
     }).catch((err) => {
-      console.log(err)
+      console.error(err)
     });; 
   }
 }

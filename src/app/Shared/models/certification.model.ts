@@ -2,13 +2,10 @@
 
 
 export class Certification {
-    CertificationName:       string;
-    CertificationId:         number;
-    CertCatagoryId:          number;
-    CertCatagoryName:        string;
+    certificationName:       string;
+    certificationId:         number;
+    certCatagoryId:          number;
+    certCatagoryName:        string;
 
-    deserialize(input: any) {
-        Object.assign(this, input);
-        return this;
-    }
+    
 }

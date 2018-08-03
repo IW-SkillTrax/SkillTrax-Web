@@ -1,62 +1,35 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
+import { CookieService } from 'ngx-cookie-service';
+import { EmployeeService } from './employee.service';
+import { Employee } from '../models/employee.model';
+import { User } from '../models/user.model';
 @Injectable({
   providedIn: 'root'
 })
 export class UserService { 
 
-  currentUser:any
+  returnedEmployee: Employee
+  currentUser: User;
 
-  constructor(private http:HttpClient) { }
+  constructor(private cookieService: CookieService, private employeeService: EmployeeService) { }
 
   setCurrentUser(adUniqueId: string) {
-    this.http.get(`https://localhost:44346/Employee/ActiveDirectoryId/${adUniqueId}`).subscribe((user) => {
-      console.log(user)
-      sessionStorage.setItem('currentUser', user.toString());
-    })
+    this.employeeService.getUser(adUniqueId).subscribe(
+      data => {this.returnedEmployee = data},
+      err => console.error(err),
+      () => this.setUserCookie()
+    )
   }
-
-//create Json user
+  setUserCookie(){
+    this.currentUser = new User();
+    this.currentUser.employeeId = this.returnedEmployee.employeeId;
+    this.currentUser.firstName = this.returnedEmployee.firstName;
+    this.currentUser.lastName = this.returnedEmployee.lastName;
+    this.currentUser.isAdmin = this.returnedEmployee.isAdmin;
+    
+    this.cookieService.set("currentUser", JSON.stringify(this.currentUser));
+  }
   getCurrentUser() {
-    return user;
+    return JSON.parse(this.cookieService.get("currentUser"));
   }
 }
-const user: any =
-{
-  "employeeId": 3,
-  "firstName": "Gib",
-  "lastName": "Bowden",
-  "isAdmin": false,
-  "adUniqueIdentifier": "gib.bowden@infoworks-tn.com",
-  "roleId": 1,
-  "roleName": "Consultant",
-  "skills": [
-      {
-          "skillId": 360,
-          "skillName": "Xcode4",
-          "solutionId": 3,
-          "solutionName": "Technology",
-          "skillTypeId": 7,
-          "skillTypeName": "Integrated Development Environment (IDE)"
-      },
-      {
-          "skillId": 363,
-          "skillName": "Microsoft Excel",
-          "solutionId": 1,
-          "solutionName": "Analytics",
-          "skillTypeId": 1,
-          "skillTypeName": "Application"
-      },
-      {
-          "skillId": 371,
-          "skillName": "ReSharper",
-          "solutionId": 3,
-          "solutionName": "Technology",
-          "skillTypeId": 1,
-          "skillTypeName": "Application"
-      }
-  ],
-  "certifications": []
-};
-

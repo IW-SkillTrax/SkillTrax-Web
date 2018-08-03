@@ -3,12 +3,12 @@
 
 
 export class Skill{
-    SkillId:         number;
-    SkillName:       string;
-    SolutionName:   string;
-    SolutionId: number;
-    SkillTypeName:       string;
-    SkillTypeId:     number;
+    skillId:         number;
+    skillName:       string;
+    solutionName:   string;
+    solutionId: number;
+    skillTypeName:       string;
+    skillTypeId:     number;
     
     deserialize(input: any) {
         Object.assign(this, input);

@@ -11,7 +11,9 @@ export class ProfileComponent implements OnInit {
 
   id: number;
   private sub: any;
-  user: Employee;
+  employee: Employee;
+  skillTypes: any[];
+  skillTypesOpen = {};
   constructor(private route: ActivatedRoute, private employeeService: EmployeeService) {}
 
   ngOnInit() {
@@ -20,17 +22,33 @@ export class ProfileComponent implements OnInit {
     this.getUserObj();
        
     });
+
+    
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
+
   getUserObj()
   {
     this.employeeService.getEmployee(this.id).subscribe(
-      data => {this.user = data as Employee},
+      data => {this.employee = data},
       err => console.error(err),
-      () => console.log("Employee Loaded", this.user)
+      () => this.getSkillTypes()
     )
   }
+  getSkillTypes(){
+    this.skillTypes = new Array() as Array<any>;
+    for(let skill of this.employee.skills){
+      if(this.skillTypes.indexOf(skill.skillTypeName) == -1){
+        this.skillTypes.push(skill.skillTypeName);
+        this.skillTypesOpen[skill.skillTypeName] = false;
+      }
+    }
+  }
+  toggleSkillDropdowns(key:string){
+    this.skillTypesOpen[key] = !this.skillTypesOpen[key];
+  }
+
 }

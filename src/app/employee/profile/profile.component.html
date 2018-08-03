@@ -1,3 +1,75 @@
-<p>
-  profile works! {{id}}
-</p>
+<div class="container-fluid" *ngIf="employee">
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-5">
+      <h2>{{employee.firstName}} {{employee.lastName}}</h2>
+      <h4><strong>Contact Info</strong></h4> 
+      <h5>Phone: 555-555-5555</h5>
+      <h5>Email: {{employee.adUniqueIdentifier}}</h5>
+    </div>
+    <div class="col-lg-5">
+      <br>
+      <h4>Role: {{employee.roleName}}</h4>
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
+
+
+  <div class="row" style="margin-top: 20px;">
+    <div class="col-lg-1"></div>
+    <!--skills section-->
+      <div class="col-lg-5">
+        <div class="card">
+          <h3 class="center">Skills</h3>
+          <button class="btn add-btn" style="align-self: flex-start;">Add Skill</button>
+
+          <ul class="item-list" style="margin-right:30px;">
+            <li *ngFor="let skillType of skillTypes">
+              <div class="accordion" (click) = toggleSkillDropdowns(skillType) [ngClass]="{
+                'active': skillTypesOpen[skillType]}">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-auto">
+                        <h5>{{skillType}}</h5>
+                    </div>
+                    <div class="col-auto" style="margin-left: auto;">
+                      <h5>
+                      <i [ngClass]="{
+                        'fas fa-caret-up': skillTypesOpen[skillType],
+                        'fas fa-caret-down': !skillTypesOpen[skillType]}"></i>
+                       </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div [hidden] = "!skillTypesOpen[skillType]" >
+                <ul class="item-list">
+                  <li *ngFor="let skill of employee.skills" style="margin:0px; padding:0px;">
+                    <div *ngIf="skill.skillTypeName == skillType" class="list-item">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-auto"><strong>{{skill.skillName}}</strong></div>
+                          <div class="col-auto" style="margin-left: auto;">
+                             <h4 class = "clickable"><i class="far fa-times-circle"></i></h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>     
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--Certifications section-->
+      <div class="col-lg-5">
+        <div class="card">
+            <h3 class="center">Certifications</h3>
+            <button class="btn add-btn" >Add Certification</button>
+            
+        </div>
+      </div>
+    <div class="col-lg-1"></div>
+  </div>
+</div>

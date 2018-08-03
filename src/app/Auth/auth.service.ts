@@ -42,12 +42,10 @@ public getName():string {
 
 public completeAuthentication():any {
   return new Promise ((resolve) => {
+    
    this._adal.handleWindowCallback();
    this._adal.getUser().subscribe(user=> {
    this._user = user;
-   console.log(this._adal.userInfo);
-   var expireIn=new Date(user.profile.exp).getTime();
-   console.log(expireIn);
    this._userService.setCurrentUser(user.profile.unique_name)
    resolve();
   })

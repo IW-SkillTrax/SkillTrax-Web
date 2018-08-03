@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-
+import { CookieService } from 'ngx-cookie-service';
 
 import {EmployeeModule} from './employee/employee.module';
 import { RouterModule } from '@angular/router';
@@ -37,7 +37,16 @@ import { AdalService } from '../../node_modules/adal-angular4';
     HttpClientModule,
     NgbModule.forRoot()
   ],
-  providers: [EmployeeService, SkillService, CertificationService, RoleService, FilterService, AuthService, AuthGuardService, AdalService],
+  providers: [EmployeeService,
+    SkillService, 
+    CertificationService,
+    RoleService,
+    FilterService,
+    AuthService,
+    AuthGuardService,
+    AdalService,
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

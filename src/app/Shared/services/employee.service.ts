@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import 'rxjs/add/operator/map';
 import { Employee } from '../models/employee.model';
 
 @Injectable({
@@ -14,16 +15,25 @@ export class EmployeeService {
 
   getEmployees()
   {
-    
     //url will be: https://localhost:44346/Employee/
     let url = this.host + this.controller;
     return this.http.get(url);
-   
   }
-  getEmployee(id: number)
+  getEmployee(id: number): Observable<Employee>
   {
     //url will be: https://localhost:44346/Employee/{id}
     let url = this.host + this.controller + id;
-    return this.http.get(url);
+    return this.http.get(url)
+    .map(employee =>
+      {
+        return employee as Employee;
+      });
+  }
+  getUser(adUniqueId: string): Observable<Employee>{
+    return this.http.get(`https://localhost:44346/Employee/ActiveDirectoryId/${adUniqueId}`)
+    .map(employee =>
+      {
+        return employee as Employee;
+      });
   }
 }
