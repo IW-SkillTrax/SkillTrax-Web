@@ -21,7 +21,7 @@
       <div class="col-lg-5">
         <div class="card">
           <h3 class="center">Skills</h3>
-          <button class="btn add-btn" style="align-self: flex-start;">Add Skill</button>
+          <button class="btn add-btn" style="margin-bottom: 15px;" (click)="open(addSkill)">Add Skill</button>
 
           <ul class="item-list" style="margin-right:30px;">
             <li *ngFor="let skillType of skillTypes">
@@ -50,7 +50,7 @@
                         <div class="row">
                           <div class="col-auto"><strong>{{skill.skillName}}</strong></div>
                           <div class="col-auto" style="margin-left: auto;">
-                             <h4 class = "clickable"><i class="far fa-times-circle"></i></h4>
+                             <h4 class = "clickable" (click) = removeSkill(skill.skillId)><i class="far fa-times-circle"></i></h4>
                           </div>
                         </div>
                       </div>
@@ -66,10 +66,80 @@
       <div class="col-lg-5">
         <div class="card">
             <h3 class="center">Certifications</h3>
-            <button class="btn add-btn" >Add Certification</button>
+            <button class="btn add-btn" style="margin-bottom: 15px;">Add Certification</button>
             
         </div>
       </div>
     <div class="col-lg-1"></div>
   </div>
 </div>
+
+
+
+
+<!--addSkill Modal template-->
+
+<ng-template #addSkill let-c="close" let-d="dismiss">
+    <div class="modal-header is-blue">
+      <h4 class="modal-title text-white" id="modal-basic-title">Add a Skill</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <i class="fas fa-times text-white"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+        <ngb-tabset [justify]="center">
+            <ngb-tab>
+                <ng-template ngbTabTitle>Search</ng-template>
+              <ng-template ngbTabContent>
+               <div style="height:400px;">
+                 <p>content goes here</p>
+               </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+              <ng-template ngbTabTitle>Browse</ng-template>
+             
+              <ng-template ngbTabContent>
+                  <ul class="item-list">
+                    <li *ngFor="let skillType of availableSkillTypes">
+                        <div class="accordion" (click) = toggleAddSkillDropdowns(skillType) [ngClass]="{
+                          'active': availableSkillTypesOpen[skillType]}">
+                          <div class="container-fluid">
+                            <div class="row">
+                              <div class="col-auto">
+                                  <h5>{{skillType}}</h5>
+                              </div>
+                              <div class="col-auto" style="margin-left: auto;">
+                                <h5>
+                                <i [ngClass]="{
+                                  'fas fa-caret-up': skillTypesOpen[skillType],
+                                  'fas fa-caret-down': !skillTypesOpen[skillType]}"></i>
+                                 </h5>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div [hidden] = "!availableSkillTypesOpen[skillType]" >
+                            <ul class="item-list">
+                              <li *ngFor="let skill of skills" style="margin:0px; padding:0px;">
+                                <div *ngIf="skill.skillTypeName == skillType" class="list-item">
+                                  <div class="container-fluid">
+                                    <div class="row">
+                                      <div class="col-auto"><strong>{{skill.skillName}}</strong></div>
+                                      <div class="col-auto" style="margin-left: auto;">
+                                         <h4 class = "clickable"><i class="fas fa-plus-circle"></i></h4>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>     
+                          </div>
+                    </li>
+                  </ul>
+                      
+              </ng-template>
+                </ngb-tab>
+          </ngb-tabset>
+    </div>
+    </ng-template>

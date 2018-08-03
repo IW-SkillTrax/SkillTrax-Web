@@ -36,4 +36,13 @@ export class EmployeeService {
         return employee as Employee;
       });
   }
+  removeEmployeeSkill(employeeId, skillId){
+    //build url
+    let url = this.host + this.controller + employeeId + "/" + "RemoveSkill/" + skillId;
+    //url shoudl be https://localhost:44346/Employee/{employeeId}/RemoveSkill/{skillid}
+    return this.http.delete(url);
+  }
+  addEmployeeSkill(employeeId, skillId){
+    
+  }
 }
