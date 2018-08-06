@@ -39,10 +39,20 @@ export class EmployeeService {
   removeEmployeeSkill(employeeId, skillId){
     //build url
     let url = this.host + this.controller + employeeId + "/" + "RemoveSkill/" + skillId;
-    //url shoudl be https://localhost:44346/Employee/{employeeId}/RemoveSkill/{skillid}
+    //url should be https://localhost:44346/Employee/{employeeId}/RemoveSkill/{skillId}
     return this.http.delete(url);
   }
   addEmployeeSkill(employeeId, skillId){
-    
+    //url should be https://localhost:44346/Employee/{employeeId}/AddSkill/{skillId}
+    let url = this.host + this.controller + "/" + employeeId + "/AddSkill/"+ skillId;
+    return this.http.get(url);
+  }
+  removeEmployeeCertification(employeeId, certificationId){ 
+    let url = this.host + this.controller + "/" + employeeId + "/RemoveCertification/" + certificationId;
+    return this.http.delete(url);
+  }
+  addEmployeeCertification(employeeId, certificationId){
+    let url = this.host + this.controller + "/" + employeeId + "/AddCertification/" + certificationId;
+    return this.http.get(url);
   }
 }

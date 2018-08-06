@@ -15,17 +15,20 @@ export class ProfileComponent implements OnInit {
   profileId: number;
   private sub: any;
   employee: Employee;
+
+  skills: any;
   skillTypes: any[];
   skillTypesOpen = {};
-  certificationTypes: any[];
-  certificationTypesOpen = {};
-
-  certifications: any;
-  skills: any;
   availableSkills: any[];
   availableSkillTypes: any;
   availableSkillTypesOpen = {};
+
+  certifications: any;
+  certificationCategories: any[];
+  certificationCategoriesOpen = {};
   availableCertifications: any[];
+  availableCertificationCategories: any[];
+  availableCertificationCategoriesOpen = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -38,19 +41,32 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
        this.profileId = +params['id']; // (+) converts string 'id' to a number
-    this.getUserObj();
+    this.getEmployeeObj();
     });
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-  getUserObj()
+  getEmployeeObj()
   {
     this.employeeService.getEmployee(this.profileId).subscribe(
       data => {this.employee = data},
       err => console.error(err),
-      () => {this.getSkillTypes(), this.getCertificationTypes(), this.getSkills();}
+      () => {this.getSkillTypes(),
+              this.getCertificationCatagories(),
+              this.getSkills(),
+              this.getCertifications()}
     )
+  }
+   getCertificationCatagories(){
+    this.certificationCategories = new Array() as Array<any>;
+    this.certificationCategoriesOpen = {};
+    for(let certification of this.employee.certifications){
+      if(this.certificationCategories.indexOf(certification.certCategoryName) == -1){
+        this.certificationCategories.push(certification.certCategoryName);
+        this.certificationCategoriesOpen[certification.certCategoryName] = false;
+      }
+    }
   }
   getCertifications(){
     this.certificationService.getCertifications().subscribe(
@@ -64,7 +80,22 @@ export class ProfileComponent implements OnInit {
     for(let certification of this.employee.certifications){
       this.availableCertifications = this.availableCertifications.filter(s => s.certificationId != certification.certificationId);
     }
+    this.getAvailableCertificationCategories();
   }
+
+  getAvailableCertificationCategories(){
+    this.availableCertificationCategories = new Array() as Array<any>;
+    this.availableCertificationCategoriesOpen = {};
+    for(let certification of this.availableCertifications){
+      if(this.availableCertificationCategories.indexOf(certification.certCategoryName) == -1){
+        this.availableCertificationCategories.push(certification.certCategoryName);
+        this.availableCertificationCategoriesOpen[certification.certCategoryName] = false;
+      }
+    }
+  }
+ 
+
+
   getSkills(){
     this.skillService.getSkills().subscribe(
       data => {this.skills = data},
@@ -77,19 +108,19 @@ export class ProfileComponent implements OnInit {
     for(let skill of this.employee.skills){
       this.availableSkills = this.availableSkills.filter(s => s.skillId != skill.skillId);
     }
-    console.log("Availible Skills", this.availableSkills);
+   
     this.getAvailibleSkillTypes();
   }
 getAvailibleSkillTypes(){
   this.availableSkillTypes = new Array() as Array<any>;
   this.availableSkillTypesOpen = {};
-  for(let skill of this.skills){
+  for(let skill of this.availableSkills){
     if(this.availableSkillTypes.indexOf(skill.skillTypeName) == -1){
       this.availableSkillTypes.push(skill.skillTypeName);
       this.availableSkillTypesOpen[skill.skillTypeName] = false;
     }
   }
-  console.log("AvailableSkillTypes:", this.availableSkillTypes);
+  
 }
   getSkillTypes(){
     this.skillTypes = new Array() as Array<any>;
@@ -106,38 +137,67 @@ getAvailibleSkillTypes(){
     this.skillTypesOpen[key] = !this.skillTypesOpen[key];
   }
   toggleCertDropdowns(key:string){
-    this.certificationTypesOpen[key] = !this.certificationTypesOpen[key];
+    this.certificationCategoriesOpen[key] = !this.certificationCategoriesOpen[key];
   }
   toggleAddSkillDropdowns(key:string){
     this.availableSkillTypesOpen[key] = !this.availableSkillTypesOpen[key];
   }
-
+  toggleAddCertDropdowns(key:string){
+    this.availableCertificationCategoriesOpen[key] = !this.availableCertificationCategoriesOpen[key];
+  }
   removeSkill(skillId: string){
     this.employeeService.removeEmployeeSkill(this.profileId, skillId).subscribe(
       data =>{let x = data},
       err => console.error(err),
-      () => this.removeSkillFromDOM(skillId)
+      () => this.removeSkillUpdateDOM(skillId)
     )
   }
-  removeSkillFromDOM(skillId){
+  removeSkillUpdateDOM(skillId){
     this.employee.skills = this.employee.skills.filter(s => s.skillId != skillId);
-    console.log(this.employee.skills);
     this.getSkillTypes();
-    console.log(this.skillTypes);
+  
+    this.availableSkills.push(this.skills.filter(s => s.skillId == skillId)[0]);
+  
+    this.getAvailibleSkillTypes();
   }
-  addSkill(skillId){
-    this.employeeService
+  removeCertification(certificationId){
+    this.employeeService.removeEmployeeCertification(this.profileId, certificationId).subscribe(
+      data => {let x = data},
+      err => console.error(err),
+      () => this.removeCertificationUpdateDOM(certificationId)
+    )
   }
-  getCertificationTypes(){
-    this.certificationTypes = new Array() as Array<any>;
-    this.certificationTypesOpen = {};
-    for(let certification of this.employee.certifications){
-      if(this.certificationTypes.indexOf(certification.certCatagoryName) == -1){
-        this.certificationTypes.push(certification.certCatagoryName);
-        this.certificationTypesOpen[certification.certCatagoryName] = false;
-      }
-    }
+  removeCertificationUpdateDOM(certificationId){
+    this.employee.certifications = this.employee.certifications.filter(c => c.certificationId != certificationId);
+    this.availableCertifications.push(this.certifications.filter(c => c.certificationId == certificationId)[0]);
+    this.getCertificationCatagories();
+    
   }
+  addCertificationToProfile(certificationId){
+    this.employeeService.addEmployeeCertification(this.profileId, certificationId).subscribe(
+      data => {let x =  data},
+      err => console.error(err),
+      () => this.addCertificationDOMUpdate(certificationId)
+    )
+  }
+  addSkillToProfile(skillId){
+    this.employeeService.addEmployeeSkill(this.profileId, skillId).subscribe(
+      data => {let x = data},
+      err => console.error(err),
+      () => this.addSkillDOMUpdate(skillId)
+    )
+  }
+  addCertificationDOMUpdate(certificationId){
+
+  }
+
+  addSkillDOMUpdate(skillId){
+    this.employee.skills.push(this.skills.filter(s => s.skillId == skillId)[0]);
+    this.availableSkills = this.availableSkills.filter(s => s.skillId != skillId);
+    this.getAvailibleSkillTypes();
+    this.getSkillTypes();
+  }
+  
 
 
 

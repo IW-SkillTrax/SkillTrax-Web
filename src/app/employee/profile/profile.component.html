@@ -66,8 +66,45 @@
       <div class="col-lg-5">
         <div class="card">
             <h3 class="center">Certifications</h3>
-            <button class="btn add-btn" style="margin-bottom: 15px;">Add Certification</button>
+            <button class="btn add-btn" style="margin-bottom: 15px;" (click)= open(addCertification)>Add Certification</button>
             
+            <ul class="item-list" style="margin-right:30px;">
+              <li *ngFor="let certCategory of certificationCategories">
+                <div class="accordion" (click) = toggleCertDropdowns(certCategory) [ngClass]="{
+                  'active': certificationCategoriesOpen[certCategory]}">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-auto">
+                          <h5>{{certCategory}}</h5>
+                      </div>
+                      <div class="col-auto" style="margin-left: auto;">
+                        <h5>
+                        <i [ngClass]="{
+                          'fas fa-caret-up': certificationCategoriesOpen[certCategory],
+                          'fas fa-caret-down': !certificationCategoriesOpen[certCategory]}"></i>
+                         </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div [hidden] = "!certificationCategoriesOpen[certCategory]" >
+                  <ul class="item-list">
+                    <li *ngFor="let cert of employee.certifications" style="margin:0px; padding:0px;">
+                      <div *ngIf="cert.certCategoryName == certCategory" class="list-item">
+                        <div class="container-fluid">
+                          <div class="row">
+                            <div class="col-auto"><strong>{{cert.certificationName}}</strong></div>
+                            <div class="col-auto" style="margin-left: auto;">
+                               <h4 class = "clickable" (click) = removeCertification(cert.certificationId)><i class="far fa-times-circle"></i></h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>     
+                </div>
+              </li>
+            </ul>
         </div>
       </div>
     <div class="col-lg-1"></div>
@@ -121,13 +158,13 @@
                         </div>
                         <div [hidden] = "!availableSkillTypesOpen[skillType]" >
                             <ul class="item-list">
-                              <li *ngFor="let skill of skills" style="margin:0px; padding:0px;">
+                              <li *ngFor="let skill of availableSkills" style="margin:0px; padding:0px;">
                                 <div *ngIf="skill.skillTypeName == skillType" class="list-item">
                                   <div class="container-fluid">
                                     <div class="row">
                                       <div class="col-auto"><strong>{{skill.skillName}}</strong></div>
                                       <div class="col-auto" style="margin-left: auto;">
-                                         <h4 class = "clickable"><i class="fas fa-plus-circle"></i></h4>
+                                         <h4 class = "clickable" (click)= addSkillToProfile(skill.skillId)><i class="fas fa-plus-circle"></i></h4>
                                       </div>
                                     </div>
                                   </div>
@@ -143,3 +180,70 @@
           </ngb-tabset>
     </div>
     </ng-template>
+
+
+<!--Add Certification Modal template-->
+    <ng-template #addCertification let-c="close" let-d="dismiss">
+      <div class="modal-header is-blue">
+        <h4 class="modal-title text-white" id="modal-basic-title">Add a Certification</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <i class="fas fa-times text-white"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+          <ngb-tabset [justify]="center">
+              <ngb-tab>
+                  <ng-template ngbTabTitle>Search</ng-template>
+                <ng-template ngbTabContent>
+                 <div style="height:400px;">
+                   <p>content goes here</p>
+                 </div>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab>
+                <ng-template ngbTabTitle>Browse</ng-template>
+               
+                <ng-template ngbTabContent>
+                    <ul class="item-list">
+                      <li *ngFor="let certCategory of availableCertificationCategories">
+                          <div class="accordion" (click) = toggleAddCertDropdowns(certCategory) [ngClass]="{
+                            'active': availableCertificationCategoriesOpen[certCategory]}">
+                            <div class="container-fluid">
+                              <div class="row">
+                                <div class="col-auto">
+                                    <h5>{{certCategory}}</h5>
+                                </div>
+                                <div class="col-auto" style="margin-left: auto;">
+                                  <h5>
+                                  <i [ngClass]="{
+                                    'fas fa-caret-up': availableCertificationCategoriesOpen[certCategory],
+                                    'fas fa-caret-down': !availableCertificationCategoriesOpen[certCategory]}"></i>
+                                  </h5>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div [hidden] = "!availableCertificationCategoriesOpen[certCategory]" >
+                              <ul class="item-list">
+                                <li *ngFor="let cert of availableCertifications" style="margin:0px; padding:0px;">
+                                  <div *ngIf="cert.certCategoryName == certCategory" class="list-item">
+                                    <div class="container-fluid">
+                                      <div class="row">
+                                        <div class="col-auto"><strong>{{cert.certificationName}}</strong></div>
+                                        <div class="col-auto" style="margin-left: auto;">
+                                           <h4 class = "clickable"><i class="fas fa-plus-circle"></i></h4>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>     
+                            </div>
+                      </li>
+                    </ul>
+                        
+                </ng-template>
+                  </ngb-tab>
+            </ngb-tabset>
+      </div>
+      </ng-template>

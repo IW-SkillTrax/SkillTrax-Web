@@ -4,8 +4,8 @@
 export class Certification {
     certificationName:       string;
     certificationId:         number;
-    certCatagoryId:          number;
-    certCatagoryName:        string;
+    certCategoryId:          number;
+    certCategoryName:        string;
 
     
 }
