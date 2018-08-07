@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
 import { NavComponent } from './Shared/nav/nav.component';
 import { appRoutes } from './routes';
 import { EmployeeService } from './Shared/services/employee.service';
-import { HttpClientModule } from '../../node_modules/@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { SkillService } from './Shared/services/skill.service';
 import { CertificationService } from './Shared/services/certification.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,7 +20,8 @@ import { FilterService } from './Shared/services/filter.service';
 import { AuthCallbackComponent } from './Auth/auth-callback/auth-callback.component';
 import { AuthService } from './Auth/auth.service';
 import { AuthGuardService } from './Auth/auth-guard.service';
-import { AdalService } from '../../node_modules/adal-angular4';
+import { AdalService } from 'adal-angular4';
+import { AdminModule } from './admin/admin.module';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { AdalService } from '../../node_modules/adal-angular4';
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     EmployeeModule,
+    AdminModule,
     HttpClientModule,
     NgbModule.forRoot()
   ],

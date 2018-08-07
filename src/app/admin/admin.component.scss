@@ -1,4 +1,7 @@
-
+$gray: rgb(217,217,217);
+$blue: rgb(12,73,156);
+$light-blue: rgb(91, 155, 213);
+$dark-blue:rgb(0,32,96);
 
 .is-blue {
     background-color: rgb(12,73,156);
@@ -19,6 +22,12 @@ background-color: rgb(91, 155, 213);
 .text-blue{
     color: rgb(12,73,156);
 }
+.text-dark-blue{
+    color: $dark-blue;
+}
+.text-light-blue {
+    color:$light-blue;
+}
 .is-white{
     background-color: rgb(255,255,255);
 }
@@ -32,10 +41,7 @@ background-color: rgb(91, 155, 213);
     color: rgb(255,255,255);
     background-color: rgb(91, 155, 213);
 }
-$gray: rgb(217,217,217);
-$blue: rgb(12,73,156);
-$light-blue: rgb(91, 155, 213);
-$dark-blue:rgb(0,32,96);
+
 .accordion {
     background-color: white;
     border: 2px solid $blue;
@@ -58,7 +64,7 @@ $dark-blue:rgb(0,32,96);
     background-color: $blue;
     color: white;
 }
-.list-item {
+.skill {
     background-color: white;
     border: 2px solid $light-blue;
     border-radius: 6px;
@@ -72,14 +78,13 @@ $dark-blue:rgb(0,32,96);
     width: 100%;
     text-align: left;
     transition: 0.4s;
+    cursor: pointer;
 }
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.list-item:hover {
+.skill:hover {
     background-color: $light-blue;
     color: white;
 }
-
-
 
 .item-list{
     list-style-type: none
@@ -87,3 +92,4 @@ $dark-blue:rgb(0,32,96);
 .clickable{
     cursor: pointer;
 }
+

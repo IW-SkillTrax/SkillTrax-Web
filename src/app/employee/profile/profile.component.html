@@ -124,12 +124,28 @@
       </button>
     </div>
     <div class="modal-body">
-        <ngb-tabset [justify]="center">
+        <ngb-tabset justify="fill">
             <ngb-tab>
                 <ng-template ngbTabTitle>Search</ng-template>
               <ng-template ngbTabContent>
                <div style="height:400px;">
-                 <p>content goes here</p>
+                <ng-template #rt let-r="result" let-t="term">
+                  <div (click) = addSkillBySearch(r)>
+                      {{ r.skillName}} - {{r.skillTypeName}}
+                  </div>
+                  
+                </ng-template>
+                
+                <label for="typeahead-template">Search for a skill:</label>
+                <input placeholder ="Skill Name" id="typeahead-template" type="text" class="form-control" [(ngModel)]="skillSearchBox" [ngbTypeahead]="skillSearch" [resultTemplate]="rt"
+                  [inputFormatter]="skillFormatter"  (focus) = clearSkillSearchBox() (focusout) = clearSkillSearchBox()/>
+                  <div *ngIf = "addSkillSuccess" style="margin-top: 15px;">
+                      <ngb-alert type="success" (close)="closeSkillAlert()">Skill Added</ngb-alert>
+                  </div>
+                  
+
+
+
                </div>
               </ng-template>
             </ngb-tab>
@@ -191,12 +207,24 @@
         </button>
       </div>
       <div class="modal-body">
-          <ngb-tabset [justify]="center">
+          <ngb-tabset justify="fill">
               <ngb-tab>
                   <ng-template ngbTabTitle>Search</ng-template>
                 <ng-template ngbTabContent>
                  <div style="height:400px;">
-                   <p>content goes here</p>
+                    <ng-template #ct let-r="result" let-t="term">
+                        <div (click) = addCertificationBySearch(r)>
+                            {{ r.certificationName}} - {{r.certCategoryName}}
+                        </div>
+                        
+                      </ng-template>
+                      
+                      <label for="typeahead-template">Search for a certification:</label>
+                      <input placeholder="Certification Name" id="typeahead-template" type="text" class="form-control" [(ngModel)]="certSearchBox" [ngbTypeahead]="certSearch" [resultTemplate]="ct"
+                        [inputFormatter]="certFormatter" (focus) = clearCertSearchBox() (focusout) = clearCertSearchBox()/>
+                        <div *ngIf = "addCertSuccess" style="margin-top: 15px;">
+                            <ngb-alert type="success" (close)="closeCertAlert()">Certification Added</ngb-alert>
+                        </div>
                  </div>
                 </ng-template>
               </ngb-tab>
@@ -231,7 +259,7 @@
                                       <div class="row">
                                         <div class="col-auto"><strong>{{cert.certificationName}}</strong></div>
                                         <div class="col-auto" style="margin-left: auto;">
-                                           <h4 class = "clickable"><i class="fas fa-plus-circle"></i></h4>
+                                           <h4 class = "clickable" (click) = addCertificationToProfile(cert.certificationId)><i class="fas fa-plus-circle"></i></h4>
                                         </div>
                                       </div>
                                     </div>

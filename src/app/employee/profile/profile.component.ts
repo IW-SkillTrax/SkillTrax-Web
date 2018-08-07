@@ -5,6 +5,9 @@ import { Employee } from '../../Shared/models/employee.model';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { SkillService } from '../../Shared/services/skill.service';
 import { CertificationService } from '../../Shared/services/certification.service';
+import { Observable } from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -145,6 +148,7 @@ getAvailibleSkillTypes(){
   toggleAddCertDropdowns(key:string){
     this.availableCertificationCategoriesOpen[key] = !this.availableCertificationCategoriesOpen[key];
   }
+
   removeSkill(skillId: string){
     this.employeeService.removeEmployeeSkill(this.profileId, skillId).subscribe(
       data =>{let x = data},
@@ -160,6 +164,21 @@ getAvailibleSkillTypes(){
   
     this.getAvailibleSkillTypes();
   }
+  addSkillToProfile(skillId){
+    this.employeeService.addEmployeeSkill(this.profileId, skillId).subscribe(
+      data => {let x = data},
+      err => console.error(err),
+      () => this.addSkillDOMUpdate(skillId)
+    )
+  }
+  addSkillDOMUpdate(skillId){
+    this.employee.skills.push(this.skills.filter(s => s.skillId == skillId)[0]);
+    this.availableSkills = this.availableSkills.filter(s => s.skillId != skillId);
+    this.getAvailibleSkillTypes();
+    this.getSkillTypes();
+  }
+
+
   removeCertification(certificationId){
     this.employeeService.removeEmployeeCertification(this.profileId, certificationId).subscribe(
       data => {let x = data},
@@ -171,7 +190,7 @@ getAvailibleSkillTypes(){
     this.employee.certifications = this.employee.certifications.filter(c => c.certificationId != certificationId);
     this.availableCertifications.push(this.certifications.filter(c => c.certificationId == certificationId)[0]);
     this.getCertificationCatagories();
-    
+    this.getAvailableCertificationCategories();
   }
   addCertificationToProfile(certificationId){
     this.employeeService.addEmployeeCertification(this.profileId, certificationId).subscribe(
@@ -180,26 +199,28 @@ getAvailibleSkillTypes(){
       () => this.addCertificationDOMUpdate(certificationId)
     )
   }
-  addSkillToProfile(skillId){
-    this.employeeService.addEmployeeSkill(this.profileId, skillId).subscribe(
-      data => {let x = data},
-      err => console.error(err),
-      () => this.addSkillDOMUpdate(skillId)
-    )
-  }
   addCertificationDOMUpdate(certificationId){
-
+    this.employee.certifications.push(this.certifications.filter(c => c.certificationId == certificationId)[0]);
+    this.availableCertifications = this.availableCertifications.filter(s => s.certificationId != certificationId);
+    this.getAvailableCertificationCategories();
+    this.getCertificationCatagories();
   }
-
-  addSkillDOMUpdate(skillId){
-    this.employee.skills.push(this.skills.filter(s => s.skillId == skillId)[0]);
-    this.availableSkills = this.availableSkills.filter(s => s.skillId != skillId);
-    this.getAvailibleSkillTypes();
-    this.getSkillTypes();
+  addSkillBySearch(skill){
+    this.addSkillToProfile(skill.skillId);
+    this.addSkillSuccess = true;
+  }
+  addCertificationBySearch(cert){
+    this.addCertificationToProfile(cert.certificationId);
+    this.addCertSuccess = true;
+  }
+  clearCertSearchBox(){
+    this.certSearchBox = '';
+  }
+  clearSkillSearchBox(){
+    this.skillSearchBox = '';
   }
   
-
-
+  
 
 //modal stuff
   closeResult: string;
@@ -219,5 +240,34 @@ getAvailibleSkillTypes(){
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+//Type Ahead stuff
+skillSearchBox: any;
+  skillSearch = (text$: Observable<string>) =>
+  text$.pipe(
+    debounceTime(200),
+    map(term => term === '' ? []
+      : this.availableSkills.filter(s => s.skillName.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  );
+  skillFormatter = (x: {skillName: string}) => x.skillName;
+
+certSearchBox: any;
+  certSearch = (text$: Observable<string>) =>
+  text$.pipe(
+    debounceTime(200),
+    map(term => term === '' ? []
+      : this.availableCertifications.filter(s => s.certificationName.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+  );
+  certFormatter = (x: {certificationName: string}) => x.certificationName;
+
+  //add success messages
+  addCertSuccess: boolean = false;
+  addSkillSuccess: boolean = false;
+  closeCertAlert(){
+    this.addCertSuccess = false;
+  }
+  closeSkillAlert(){
+    this.addSkillSuccess = false;
   }
 }

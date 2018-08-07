@@ -1,6 +1,8 @@
 
 
-<div class="accordion" (click) = togglePanel()>
+<div class="accordion" (click) = togglePanel()
+[ngClass]="{
+  'active': isOpen}">
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-8">
