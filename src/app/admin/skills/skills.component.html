@@ -1,119 +1,155 @@
 <div class="container-fluid" style="margin-top:30px">
   <div class="row">
     <div class="col-lg-1"></div>
-    <div class="col-lg-3">
-      <div class="card" style="min-height: 250px;">
-        <h4 style="text-align:center;">Search Skills</h4>
-        <ng-template #rt let-r="result" let-t="term">
-            <div (click) = addToSearched(r)>
-                {{ r.skillName}} - {{r.skillTypeName}}
-            </div>
-          </ng-template>
-          
-          <label for="typeahead-template">Search for a skill:</label>
-          <input placeholder ="Skill Name" id="typeahead-template" type="text" class="form-control" [(ngModel)]="skillSearchBox" [ngbTypeahead]="skillSearch" [resultTemplate]="rt"
-            [inputFormatter]="formatter"/>
-            <div>
-                <ul class="item-list">
-                    <li *ngFor="let skill of searchedSkills" style="margin:0px; padding:0px;">
-                        <div class="skill" (click) = toggleSkillsOpen(skill.skillName) [ngClass]="{
-                          'active-skill': skillsOpen[skill.skillName]}">
-                          <div class="container-fluid">
-                            <div class="row">
-                              <div class="col-sm-8"><strong>{{skill.skillName}}</strong></div>
-                              <div class="col-sm-1" style="margin-left: auto;">
-                                  <h4><i class="far fa-edit"></i></h4>
-                              </div>
-                              <div class="col-sm-1" style="margin-left: auto;">
-                                  <h4><i class="fas fa-trash-alt"></i></h4>
-                              </div>
-                              <div class="col-auto" style="margin-left: auto;">
-                                <h5> <i [ngClass]="{
-                                  'fas fa-caret-up': skillsOpen[skill.skillName],
-                                  'fas fa-caret-down': !skillsOpen[skill.skillName]}"></i></h5>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div [hidden] = "!skillsOpen[skill.skillName]" class="panel">
-                          <p>Id: {{skill.skillId}}</p> 
-                          <p>Type: {{skill.skillTypeName}}</p>
-                          <p>Solution: {{skill.solutionName}}</p>
-                        </div>
-                    </li>
-                  </ul>   
-            </div>
-      </div>
-    </div>
-    <div class="col-lg-1"></div>
-    <div class="col-lg-6">
-      <div class="card" style="min-height: 700px;">
-        <h4 style="text-align:center;">Browse Skills</h4>
-          <ul class="item-list" style ="margin-right:30px;">
-              <li *ngFor = "let skillType of skillTypes">
-                  <div class="accordion" (click) = toggleSkillTypesOpen(skillType) [ngClass]="{
-                    'active': skillTypesOpen[skillType]}">
-                    <div class="container-fluid">
-                      <div class="row">
-                        <div class="col-auto">
-                            <h5>{{skillType}}</h5>
-                        </div>
-                        <div class="col-auto" style="margin-left: auto;">
-                          <h5>
-                          <i [ngClass]="{
-                            'fas fa-caret-up': skillTypesOpen[skillType],
-                            'fas fa-caret-down': !skillTypesOpen[skillType]}"></i>
-                           </h5>
-                        </div>
+    <div class="col-lg-4">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="card section" style="height: 425px;">
+            <h4 class="card-head">Search Skills</h4>
+            <div style = "margin: 20px;">
+              <ng-template #rt let-r="result" let-t="term">
+                <div (click) = addToSearched(r)>
+                  {{ r.skillName}} - {{r.skillTypeName}}
+                </div>
+              </ng-template>
+              <div class="input-group mb-3">
+                <input placeholder ="Search for a skill Name" id="typeahead-template" type="text" class="form-control" [(ngModel)]="skillSearchBox" [ngbTypeahead]="skillSearch" [resultTemplate]="rt"
+                [inputFormatter]="formatter" (focus) = clearSearchBox() (focusout) = clearSearchBox()/>
+                <div class="input-group-append">
+                  <button class="btn is-blue text-white" type="button" (click) = clearSearched()>Clear Results</button>
+                </div>
+              </div>
+              <div>
+                <div *ngFor="let skill of searchedSkills" style="margin:0px; padding:0px;">
+                  <div class="skill" (click) = toggleSearchedSkillsOpen(skill.skillName) [ngClass]="{
+                  'active-skill': searchedSkillsOpen[skill.skillName]}">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-sm-8"><strong>{{skill.skillName}}</strong></div>
+                      <div class="col-sm-1" style="margin-left: auto;">
+                        <h4 (click) = "openEditSkillModal(skill, updateSkillModal)"><i class="far fa-edit"></i></h4>
+                      </div>
+                      <div class="col-sm-1" style="margin-left: auto;">
+                        <h4><i class="fas fa-trash-alt"></i></h4>
+                      </div>
+                      <div class="col-auto" style="margin-left: auto;">
+                        <h5> <i [ngClass]="{
+                          'fas fa-caret-up': searchedSkillsOpen[skill.skillName],
+                          'fas fa-caret-down': !searchedSkillsOpen[skill.skillName]}"></i></h5>
                       </div>
                     </div>
                   </div>
-                  <div [hidden] = "!skillTypesOpen[skillType]" >
-                      <ul class="item-list">
-                        <li *ngFor="let skill of skills" style="margin:0px; padding:0px;">
-                          <div *ngIf="skill.skillTypeName == skillType">
-                            <div class="skill" (click) = toggleSkillsOpen(skill.skillName) [ngClass]="{
-                              'active-skill': skillsOpen[skill.skillName]}">
-                              <div class="container-fluid">
-                                <div class="row">
-                                  <div class="col-sm-8"><strong>{{skill.skillName}}</strong></div>
-                                  <div class="col-sm-1" style="margin-left: auto;">
-                                      <h4><i class="far fa-edit"></i></h4>
-                                  </div>
-                                  <div class="col-sm-1" style="margin-left: auto;">
-                                      <h4><i class="fas fa-trash-alt"></i></h4>
-                                  </div>
-                                  <div class="col-auto" style="margin-left: auto;">
-                                    <h5> <i [ngClass]="{
-                                      'fas fa-caret-up': skillsOpen[skill.skillName],
-                                      'fas fa-caret-down': !skillsOpen[skill.skillName]}"></i></h5>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div [hidden] = "!skillsOpen[skill.skillName]" class="panel">
-                              <p>Id: {{skill.skillId}}</p> 
-                              <p>Type: {{skill.skillTypeName}}</p>
-                              <p>Solution: {{skill.solutionName}}</p>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>     
-                    </div>
-                  
-              </li>
-              </ul>
+                </div>
+                <div [hidden] = "!searchedSkillsOpen[skill.skillName]" class="panel">
+                  <p>Id: {{skill.skillId}}</p>
+                  <p>Type: {{skill.skillTypeName}}</p>
+                  <p>Solution: {{skill.solutionName}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card" style="height: 300px; width: 100%; margin-bottom: 50px;">
+          <h4 class="card-head">Create New Skill</h4>
+          <div style="margin: 30px">
+            <input class="form-control" placeholder="Skill Name" style="margin-bottom: 15px;">
+            <input class="form-control" placeholder="Skill Type" style="margin-bottom: 15px;">
+            <input class="form-control" placeholder="Skill Solution" style="margin-bottom: 15px;">
+            <button class="btn is-blue text-white float-right" (click) = createSkill()>Create Skill</button>
+            <div *ngIf = "createSkillSuccess">
+              <ngb-alert type="success" (close)="closeCreateSkillAlert()">Skill Created!</ngb-alert>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-lg-1"></div>
   </div>
+  <div class="col-lg-1"></div>
+  <div class="col-lg-5">
+    <div class="card section" style="height: 775px;" >
+      <h4 class="card-head">Browse Skills</h4>
+      <ul class="item-list" style ="margin-right:30px;">
+        <li *ngFor = "let skillType of skillTypes">
+          <div class="accordion" (click) = toggleSkillTypesOpen(skillType) [ngClass]="{
+          'active': skillTypesOpen[skillType]}">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-auto">
+                <h5>{{skillType}}</h5>
+              </div>
+              <div class="col-auto" style="margin-left: auto;">
+                <h5>
+                  <i [ngClass]="{
+                    'fas fa-caret-up': skillTypesOpen[skillType],
+                    'fas fa-caret-down': !skillTypesOpen[skillType]}"></i>
+                </h5>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div [hidden] = "!skillTypesOpen[skillType]" >
+    <ul class="item-list">
+    <li *ngFor="let skill of skills" style="margin:0px; padding:0px;">
+    <div *ngIf="skill.skillTypeName == skillType">
+    <div class="skill" (click) = toggleSkillsOpen(skill.skillName) [ngClass]="{
+    'active-skill': skillsOpen[skill.skillName]}">
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-sm-8"><strong>{{skill.skillName}}</strong></div>
+    <div class="col-sm-1" style="margin-left: auto;">
+    <h4 (click) = "openEditSkillModal(skill, updateSkillModal)"><i class="far fa-edit"></i></h4>
+    </div>
+    <div class="col-sm-1" style="margin-left: auto;">
+    <h4><i class="fas fa-trash-alt"></i></h4>
+    </div>
+    <div class="col-auto" style="margin-left: auto;">
+    <h5> <i [ngClass]="{
+      'fas fa-caret-up': skillsOpen[skill.skillName],
+      'fas fa-caret-down': !skillsOpen[skill.skillName]}"></i></h5>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div [hidden] = "!skillsOpen[skill.skillName]" class="panel">
+    <p>Id: {{skill.skillId}}</p> 
+    <p>Type: {{skill.skillTypeName}}</p>
+    <p>Solution: {{skill.solutionName}}</p>
+    </div>
+    </div>
+    </li>
+    </ul>     
+  </div>
+  </li>
+  </ul>
+</div>
+</div>
+<div class="col-lg-1"></div>
+</div>
 </div>
 
-
-
-
-
-
-
-
-
+<!--Update Skill Modal-->
+<ng-template #updateSkillModal let-c="close" let-d="dismiss">
+  <div class="modal-header is-blue">
+    <h4 class="modal-title text-white" id="modal-basic-title">Update Skill: {{skillTitle}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true" class="text-white">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="skillName">Skill Name</label>
+        <input name ="skillName" type="text" class="form-control" placeholder="Skill Name" [(ngModel)]="editSkillNameBox">
+        <label for="skillType">Skill Type</label>
+        <input name ="skillType" type ="text" class="form-control" placeholder="Skill Type" [(ngModel)]="editSkillTypeBox">
+        <label for="skillSolution">Skill Solution</label>
+        <input name="skillSolution" type="text" class="form-control" placeholder="Skill Solution" [(ngModel)]="editSkillSolutionBox">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn is-blue text-white" (click) = updateSkill()>Update</button>
+  </div>
+</ng-template>
