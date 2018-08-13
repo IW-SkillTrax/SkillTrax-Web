@@ -16,15 +16,26 @@ export class CertificationsComponent implements OnInit {
   certifications:any;
   certificationsOpen = {};
   certificationCategories: any;
-  certificationCategoriesOpen = {}; 
+  certificationCategoriesOpen = {};
   searchedCertifications: any;
   searchedCertificationsOpen:any;
   searchableCertifications:any;
   createCertSuccess = false;
+  categories:any;
 
   ngOnInit() {
-    this.getCertifications()
+    this.getCertifications();
+    this.getCategories();
   }
+
+  getCategories(){
+    this.certificationService.getCertificationCategories().subscribe(
+      data => {this.categories = data},
+      err => console.error(err),
+      () => console.log("Categories:", this.categories)
+    )
+  }
+
 getCertifications(){
   this.certificationService.getCertifications().subscribe(
     data => {this.certifications = data},
@@ -94,11 +105,21 @@ createCertCategoryBox:any;
 closeCreateCertAlert(){
 this.createCertSuccess = false;
 }
-createSkill(){
-
+createCertification(){
+  this.certificationService.createCertification(this.createCertNameBox, this.createCertCategoryBox).subscribe(
+    data => {let x = data},
+    err => console.error(err),
+    () => console.log("Certification Created")
+  );
+  this.createCertCategoryBox = '';
+  this.createCertNameBox = '';
   this.createCertSuccess = true;
 }
-
+UpdateCertification(){
+  console.log(this.editCertNameBox);
+  console.log(this.editCertCategoryBox);
+  this.modalReference.close();
+};
 
 
 //Modal Stuff
@@ -113,11 +134,7 @@ openEditModal(cert, content){
   this.open(content);
 
 }
-UpdateCertification(){
-  console.log(this.editCertNameBox);
-  console.log(this.editCertCategoryBox);
-  this.modalReference.close();
-};
+
 
 open(content) {
   this.modalReference = this.modalService.open(content);

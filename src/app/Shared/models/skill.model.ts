@@ -7,8 +7,4 @@ export class Skill{
     skillTypeName:       string;
     skillTypeId:     number;
     
-    deserialize(input: any) {
-        Object.assign(this, input);
-        return this;
-    }
 }

@@ -53,9 +53,11 @@
         <div class="card" style="min-height: 300px; width: 100%; margin-bottom: 50px;">
           <h4 class="card-head">Create New Certification</h4>
           <div style="margin: 30px">
-            <input class="form-control" placeholder="Certification Name" style="margin-bottom: 15px;">
-            <input class="form-control" placeholder="Certification Category" style="margin-bottom: 15px;">
-            <button class="btn is-blue text-white float-right" (click) = createSkill()>Create Certification</button>
+            <input class="form-control" placeholder="Certification Name" style="margin-bottom: 15px;" [(ngModel)] = "createCertNameBox">
+            <select class="form-control" style="margin-bottom: 15px;">
+              <option *ngFor = "let category of categories" value = {{category.certCategoryId}}>{{category.certCategoryName}}</option>
+            </select>
+            <button class="btn is-blue text-white float-right" (click) = createCertification()>Create Certification</button>
             <div *ngIf = "createCertSuccess">
               <ngb-alert type="success" (close)="closeCreateCertAlert()">Certification Created!</ngb-alert>
             </div>
@@ -145,6 +147,6 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn is-blue text-white" (click) = updateSkill()>Update</button>
+    <button type="button" class="btn is-blue text-white" (click) = updateCertification()>Update</button>
   </div>
 </ng-template>
