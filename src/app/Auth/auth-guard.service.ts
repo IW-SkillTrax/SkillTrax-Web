@@ -15,5 +15,4 @@ constructor(private _authService:AuthService) { }
    this._authService.startAuthentication();
     return false;
    }
-
 }

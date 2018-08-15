@@ -138,7 +138,7 @@
                 
                 <label for="typeahead-template">Search for a skill:</label>
                 <input placeholder ="Skill Name" id="typeahead-template" type="text" class="form-control" [(ngModel)]="skillSearchBox" [ngbTypeahead]="skillSearch" [resultTemplate]="rt"
-                  [inputFormatter]="skillFormatter"  (focus) = clearSkillSearchBox() (focusout) = clearSkillSearchBox()/>
+                  [inputFormatter]="skillFormatter"  (focus) = clearSkillSearchBox() (focusout) = clearSkillSearchBox() (keydown.enter) = enterAddSkill()/>
                   <div *ngIf = "addSkillSuccess" style="margin-top: 15px;">
                       <ngb-alert type="success" (close)="closeSkillAlert()">Skill Added</ngb-alert>
                   </div>

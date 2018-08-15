@@ -8,15 +8,16 @@
         <h4 class="text-center">The web app that tracks everyone's talents and abilities.</h4>
         <br>
         <p>Start by searching through the company for a specific attribute</p>
-        <ng-template #rt let-r="result" let-t="term" >
-            <div (click) = addFilter(r) >{{r.name}} - {{r.catagory}}</div>
-        </ng-template>
+        <div *ngIf = "filters != undefined">
+            <ng-template #rt let-r="result" let-t="term" >
+                <div (click) = addFilter(r) >{{r.name}} - {{r.catagory}}</div>
+            </ng-template>
                      
-        <input placeholder="Search for a Person, Skill, Certification or Role" 
-            id="typeahead-template" 
-            type="text" class="form-control" [(ngModel)]="searchBox1" [ngbTypeahead]="search" [resultTemplate]="rt"
-            [inputFormatter]="formatter" (keydown.enter) = enterAddFilter1()/>
-            
+            <input placeholder="Search for a Person, Skill, Certification or Role" 
+                id="typeahead-template" 
+                type="text" class="form-control" [(ngModel)]="searchBox1" [ngbTypeahead]="search" [resultTemplate]="rt"
+                [inputFormatter]="formatter" (keydown.enter) = enterAddFilter1()/>
+        </div>
     </div>
 </div>
 
@@ -27,6 +28,9 @@
 
 
 <!--input Div-->
+
+
+
 <ng-template #elseBlock>
     <div style="margin: 50px;"></div>
     <div class="container-fluid">
@@ -107,7 +111,7 @@
                                   
                                 <ul class="people-list" #EmployeeList>
                                     <li *ngFor="let person of filteredEmployees">
-                                        <app-employee-list-item [employee] ="person"></app-employee-list-item>
+                                        <app-employee-list-item [employee] ="person" [userIsAdmin] = "User.isAdmin"></app-employee-list-item>
                                     </li>
                                 </ul>
                             </ng-template>
@@ -118,3 +122,4 @@
         </div>
     </div>
 </ng-template>
+

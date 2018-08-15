@@ -62,3 +62,16 @@ background-color: rgb(91, 155, 213);
 .is-white{
     background-color: rgb(255,255,255);
 }
+.loader {
+    border: 16px solid rgb(128,128,128); /* Light grey */
+    border-top: 16px solid rgb(91, 155, 213); /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

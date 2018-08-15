@@ -25,9 +25,13 @@ export class CertificationService {
     return this.http.delete(url);
   }
 
-  createCertification(name, category){
+  createCertification(name, categoryId){
     let url = this.host + this.controller;
-    return this.http.post(url, {"CertificationName": name, "CertCategoryName": category});
+    return this.http.post(url, {"CertificationName": name, "CertCategoryId": categoryId});
   }
-
+  updateCertification(id, name, categoryId){
+    let url = this.host + this.controller + id;
+    return this.http.put(url, {"CertificationName": name, "CertCategoryId": categoryId})
+  }
+  
 }

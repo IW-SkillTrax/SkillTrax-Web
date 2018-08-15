@@ -35,9 +35,15 @@ User:          any;
 
   ngOnInit() {
   this.getData();
-  this.User = this.userService.getCurrentUser();
+ this.getUser()
+  
   }
-
+  async  getUser() {
+    
+    this.User = await this.userService.getCurrentUser();
+    console.log("User", this.User);
+   
+  }
   
 //typeahead functions
   search = (text$: Observable<string>) =>

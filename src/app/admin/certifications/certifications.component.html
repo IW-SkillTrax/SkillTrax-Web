@@ -14,25 +14,28 @@
               </ng-template>
               <div class="input-group mb-3">
                 <input placeholder ="Search for a certification Name" id="typeahead-template" type="text" class="form-control" [(ngModel)]="certificationSearchBox" [ngbTypeahead]="certificationSearch" [resultTemplate]="rt"
-                [inputFormatter]="formatter" (focus) = clearSearchBox() (focusout) = clearSearchBox()/>
+                [inputFormatter]="formatter" (keydown.enter) = enterAddToSearched() (focus) = clearSearchBox() (focusout) = clearSearchBox()/>
                 <div class="input-group-append">
                   <button class="btn is-blue text-white" type="button" (click) = clearSearched()>Clear Results</button>
                 </div>
               </div>
+              <div *ngIf = "searchedCertifications.length == 0" style ="text-align:center; margin-top:50px;">
+                  <i class="fas fa-users bigIcon"></i>
+              </div>
               <div>
                 <div *ngFor="let cert of searchedCertifications" style="margin:0px; padding:0px;">
-                  <div class="skill" (click) = toggleSearchedCertificationsOpen(cert.certificationName) [ngClass]="{
+                  <div class="skill"  [ngClass]="{
                   'active-skill': searchedCertificationsOpen[cert.certificationName]}">
                   <div class="container-fluid">
                     <div class="row">
-                      <div class="col-sm-8"><strong>{{cert.certificationName}}</strong></div>
+                      <div class="col-sm-8" (click) = toggleSearchedCertificationsOpen(cert.certificationName)><strong>{{cert.certificationName}}</strong></div>
                       <div class="col-sm-1" style="margin-left: auto;">
                         <h4 (click) = "openEditModal(cert, updateCertModal)"><i class="far fa-edit"></i></h4>
                       </div>
                       <div class="col-sm-1" style="margin-left: auto;">
-                        <h4><i class="fas fa-trash-alt"></i></h4>
+                        <h4 (click) = "deleteCertification(cert.certificationId)"><i class="fas fa-trash-alt"></i></h4>
                       </div>
-                      <div class="col-auto" style="margin-left: auto;">
+                      <div class="col-auto" style="margin-left: auto;" (click) = toggleSearchedCertificationsOpen(cert.certificationName)>
                         <h5> <i [ngClass]="{
                           'fas fa-caret-up': searchedCertificationsOpen[cert.certificationName],
                           'fas fa-caret-down': !searchedCertificationsOpen[cert.certificationName]}"></i></h5>
@@ -53,9 +56,9 @@
         <div class="card" style="min-height: 300px; width: 100%; margin-bottom: 50px;">
           <h4 class="card-head">Create New Certification</h4>
           <div style="margin: 30px">
-            <input class="form-control" placeholder="Certification Name" style="margin-bottom: 15px;" [(ngModel)] = "createCertNameBox">
-            <select class="form-control" style="margin-bottom: 15px;">
-              <option *ngFor = "let category of categories" value = {{category.certCategoryId}}>{{category.certCategoryName}}</option>
+            <input (focus) = "clearNameBox()" class="form-control" placeholder="Certification Name" style="margin-bottom: 15px;" [(ngModel)] = "createCertNameBox">
+            <select class="form-control" style="margin-bottom: 15px;" [(ngModel)] = "createCertCategoryBox">
+              <option *ngFor = "let category of categories" [ngValue] = "category">{{category.certCategoryName}}</option>
             </select>
             <button class="btn is-blue text-white float-right" (click) = createCertification()>Create Certification</button>
             <div *ngIf = "createCertSuccess">
@@ -93,18 +96,18 @@
     <ul class="item-list">
     <li *ngFor="let cert of certifications" style="margin:0px; padding:0px;">
     <div *ngIf="cert.certCategoryName == certCategory">
-    <div class="skill" (click) = toggleCertificationsOpen(cert.certificationName) [ngClass]="{
+    <div class="skill"  [ngClass]="{
     'active-skill': certificationsOpen[cert.certificationName]}">
     <div class="container-fluid">
     <div class="row">
-    <div class="col-sm-8"><strong>{{cert.certificationName}}</strong></div>
+    <div class="col-sm-8" (click) = toggleCertificationsOpen(cert.certificationName)><strong>{{cert.certificationName}}</strong></div>
     <div class="col-sm-1" style="margin-left: auto;">
     <h4 (click) = "openEditModal(cert, updateCertModal)"><i class="far fa-edit"></i></h4>
     </div>
     <div class="col-sm-1" style="margin-left: auto;">
-    <h4><i class="fas fa-trash-alt"></i></h4>
+    <h4 (click) = "deleteCertification(cert.certificationId)"><i class="fas fa-trash-alt"></i></h4>
     </div>
-    <div class="col-auto" style="margin-left: auto;">
+    <div class="col-auto" style="margin-left: auto;" (click) = toggleCertificationsOpen(cert.certificationName)>
     <h5> <i [ngClass]="{
       'fas fa-caret-up': certificationsOpen[cert.certificationName],
       'fas fa-caret-down': !certificationsOpen[cert.certificationName]}"></i></h5>
@@ -118,7 +121,7 @@
     </div>
     </div>
     </li>
-    </ul>     
+    </ul>
   </div>
   </li>
   </ul>
@@ -142,11 +145,13 @@
         <label for="certName">Certification Name</label>
         <input name ="certName" type="text" class="form-control" placeholder="Certification Name" [(ngModel)]="editCertNameBox">
         <label for="certCategory">Certification Category</label>
-        <input name ="certCategory" type ="text" class="form-control" placeholder="Certification Category" [(ngModel)]="editCertCategoryBox">
+        <select name ="certCategory" class="form-control" style="margin-bottom: 15px;" [(ngModel)]="editCertCategoryBox">
+          <option *ngFor = "let category of categories" [ngValue] = "category">{{category.certCategoryName}}</option>
+        </select>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn is-blue text-white" (click) = updateCertification()>Update</button>
+    <button type="button" class="btn is-blue text-white" (click) = "updateCertification()">Update</button>
   </div>
 </ng-template>

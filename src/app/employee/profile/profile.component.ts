@@ -209,9 +209,19 @@ getAvailibleSkillTypes(){
     this.addSkillToProfile(skill.skillId);
     this.addSkillSuccess = true;
   }
+  enterAddSkill(){
+    if(this.skillSearchBox.skillId != undefined){
+      this.addSkillBySearch(this.skillSearchBox);
+    }
+  }
   addCertificationBySearch(cert){
     this.addCertificationToProfile(cert.certificationId);
     this.addCertSuccess = true;
+  }
+  enterAddCertification(){
+    if(this.certSearchBox.certificationId != undefined){
+      this.addCertificationBySearch(this.certSearchBox);
+    }
   }
   clearCertSearchBox(){
     this.certSearchBox = '';

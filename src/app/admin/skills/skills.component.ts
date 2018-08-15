@@ -24,7 +24,7 @@ solutions = [
   skillsOpen = {};
   skillTypes: any;
   skillTypesOpen = {}; 
-  searchedSkills: any;
+  searchedSkills = [];
   searchedSkillsOpen:any;
   searchableSkills:any;
   createSkillSuccess = false;
@@ -38,7 +38,7 @@ solutions = [
     this.skillService.getSkillTypes().subscribe(
       data => {this.types = data},
       err => console.error(err),
-      () => console.log("Types:", this.types)
+      
     )
   }
   getSkills(){
@@ -84,6 +84,13 @@ addToSearched(skill){
   this.searchedSkills.push(skill);
   this.searchedSkillsOpen[skill.skillName] = false;
 }
+enterAddToSearched(){
+  if(this.skillSearchBox.skillId != undefined){
+    if(this.searchedSkills.indexOf(this.skillSearchBox) == -1){ 
+      this.addToSearched(this.skillSearchBox);
+    }
+  }
+}
 clearSearched(){
   this.searchableSkills = this.skills.slice();
   this.searchedSkills = [];
@@ -114,6 +121,10 @@ createSkillSolutionBox:any;
 
 createSkill(){
  //TODO: validate Name
+ if(this.createSkillTypeBox != undefined 
+    && this.createSkillSolutionBox != undefined 
+    && this.createSkillNameBox != "" 
+    && this.createSkillNameBox != undefined){
  let newSkill = new Skill();
  newSkill.skillName = this.createSkillNameBox;
  newSkill.skillTypeId = this.createSkillTypeBox.skillTypeId;
@@ -121,23 +132,24 @@ createSkill(){
  newSkill.solutionId = this.createSkillSolutionBox.solutionId;
  newSkill.solutionName = this.createSkillSolutionBox.solutionName;
 
- console.log("Type", this.createSkillTypeBox);
- console.log("Solution", this.createSkillSolutionBox);
-
  this.skillService.createSkill(newSkill.skillName, newSkill.skillTypeId, newSkill.solutionId).subscribe(
   data => {newSkill.skillId = data as number},
   err => console.log(err),
   () => this.addSkillToDOM(newSkill)
  )
 }
+}
 
 addSkillToDOM(newSkill: any){
-  console.log("Add Skill to DOM");
+ 
   this.skills.push(newSkill);
   this.getSkillTypes();
   this.getSearchableSkills();
+  this.createSkillSuccess = true;
 }
-
+clearNameBox(){
+  this.createSkillNameBox = '';
+}
 updateSkill(){
   let updatedSkill = new Skill();
   updatedSkill.skillId = this.skillId;
@@ -163,12 +175,17 @@ updateSkillDOM(updatedSkill){
   let index = this.searchableSkills.indexOf(oldSkill);
   if(index != -1){
     this.searchableSkills.splice(index, 1);
+    this.searchableSkills.push(updatedSkill);
   }
   else{
    oldSkill = this.searchedSkills.filter(s => s.skillId == updatedSkill.skillId)[0];
-   index = this.searched
+   index = this.searchedSkills.indexOf(oldSkill);
+   this.searchedSkills.splice(index, 1);
+   this.searchedSkills.push(updatedSkill);
   }
+  
 }
+
 deleteSkill(skillId){
   this.skillService.deleteSkill(skillId).subscribe(
     data => {let x = data},

@@ -46,7 +46,7 @@ public completeAuthentication():any {
    this._adal.handleWindowCallback();
    this._adal.getUser().subscribe(user=> {
    this._user = user;
-   console.log(user);
+   
    this._userService.setCurrentUser(user.profile.unique_name)
    resolve();
   })

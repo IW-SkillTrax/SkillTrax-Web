@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { EmployeeService } from './employee.service';
 import { Employee } from '../models/employee.model';
 import { User } from '../models/user.model';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -29,7 +30,22 @@ export class UserService {
     
     this.cookieService.set("currentUser", JSON.stringify(this.currentUser));
   }
-  getCurrentUser() {
-    return JSON.parse(this.cookieService.get("currentUser"));
-  }
+
+getCurrentUser() {
+  return new Promise(resolve => {
+    if(this.cookieService.check('currentUser')){
+      resolve(JSON.parse(this.cookieService.get("currentUser")));
+    }
+    else{
+      let x = setInterval(function(scope){
+        if(scope.cookieService.check('currentUser')){
+          resolve(JSON.parse(scope.cookieService.get("currentUser")));
+          clearInterval(x);
+        }
+      }, 100, this);
+    }
+    
+  });
+}
+
 }

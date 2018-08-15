@@ -17,7 +17,7 @@ export class CertificationsComponent implements OnInit {
   certificationsOpen = {};
   certificationCategories: any;
   certificationCategoriesOpen = {};
-  searchedCertifications: any;
+  searchedCertifications = [];
   searchedCertificationsOpen:any;
   searchableCertifications:any;
   createCertSuccess = false;
@@ -32,7 +32,7 @@ export class CertificationsComponent implements OnInit {
     this.certificationService.getCertificationCategories().subscribe(
       data => {this.categories = data},
       err => console.error(err),
-      () => console.log("Categories:", this.categories)
+     
     )
   }
 
@@ -78,6 +78,13 @@ addToSearched(skill){
   this.searchedCertifications.push(skill);
   this.searchedCertificationsOpen[skill.skillName] = false;
 }
+enterAddToSearched(){
+  if(this.certificationSearchBox.certificationId != undefined){
+    if(this.searchedCertifications.indexOf(this.certificationSearchBox) == -1){ 
+      this.addToSearched(this.certificationSearchBox);
+    }
+  }
+}
 clearSearched(){
   this.searchableCertifications = this.certifications.slice();
   this.searchedCertifications = [];
@@ -106,20 +113,90 @@ closeCreateCertAlert(){
 this.createCertSuccess = false;
 }
 createCertification(){
-  this.certificationService.createCertification(this.createCertNameBox, this.createCertCategoryBox).subscribe(
-    data => {let x = data},
-    err => console.error(err),
-    () => console.log("Certification Created")
-  );
-  this.createCertCategoryBox = '';
-  this.createCertNameBox = '';
+  if(this.createCertCategoryBox != undefined 
+      && this.createCertNameBox != "" 
+      && this.createCertNameBox != undefined){
+    let newCert = new Certification();
+    newCert.certificationName = this.createCertNameBox;
+    newCert.certCategoryId = this.createCertCategoryBox.certCategoryId;
+    newCert.certCategoryName = this.createCertCategoryBox.certCategoryName;
+
+    this.certificationService.createCertification(newCert.certificationName, newCert.certCategoryId).subscribe(
+      data => {newCert.certificationId = data as number, console.log(data as number)},
+      err => console.error(err),
+     () => this.addCertToDOM(newCert)
+    );
+    this.createCertNameBox = '';
+  }
+}
+addCertToDOM(newCert){
+  this.certifications.push(newCert);
+  this.getCertificationCategories();
+  this.getSearchableCertifications();
   this.createCertSuccess = true;
 }
-UpdateCertification(){
-  console.log(this.editCertNameBox);
-  console.log(this.editCertCategoryBox);
+clearNameBox(){
+  this.createCertNameBox = '';
+}
+deleteCertification(certId){
+  this.certificationService.deleteCertification(certId).subscribe(
+    data =>{let x = data},
+    err => console.error(err),
+    () => this.removeCertFromDOM(certId)
+  )
+}
+removeCertFromDOM(certId){
+  let cert = this.certifications.filter(s => s.certificationId == certId)[0];
+  this.certifications.splice(this.certifications.indexOf(cert), 1);
+  let index = this.searchableCertifications.indexOf(cert);
+  if(index != -1){
+    this.searchableCertifications.splice(index, 1);
+  }
+  if(this.searchedCertifications != undefined){
+    index = this.searchedCertifications.indexOf(cert);
+    if(index != -1){
+      this.searchedCertifications.splice(index, 1);
+      //Remove from searchedSkills Open
+    }
+  }
+}
+editCert:any;
+
+updateCertification(){
+  let updatedCert = new Certification();
+  updatedCert.certificationId = this.editCert.certificationId;
+  updatedCert.certificationName = this.editCertNameBox;
+  updatedCert.certCategoryId = this.editCertCategoryBox.certCategoryId;
+  updatedCert.certCategoryName = this.editCertCategoryBox.certCategoryName;
+ 
+  
+  this.certificationService.updateCertification(updatedCert.certificationId, updatedCert.certificationName, updatedCert.certCategoryId).subscribe(
+    data => {let x = data},
+    err => console.error(err),
+    () => this.updateSkillDOM(updatedCert)
+  )
   this.modalReference.close();
-};
+}
+updateSkillDOM(updatedCert){
+  
+  let oldCert = this.certifications.filter(s => s.certificationId == updatedCert.certificationId)[0];
+  this.certifications.splice(this.certifications.indexOf(oldCert),1);
+  this.certifications.push(updatedCert);
+  
+  oldCert = this.searchableCertifications.filter(s => s.certificationId == updatedCert.certificationId)[0];
+  let index = this.searchableCertifications.indexOf(oldCert);
+  if(index != -1){
+    this.searchableCertifications.splice(index, 1);
+    this.searchableCertifications.push(updatedCert);
+  }
+  else{
+    oldCert = this.searchedCertifications.filter(s => s.certificationId == updatedCert.certificationId)[0];
+   index = this.searchedCertifications.indexOf(oldCert);
+   this.searchedCertifications.splice(index, 1);
+   this.searchedCertifications.push(updatedCert);
+  }
+  
+}
 
 
 //Modal Stuff
@@ -129,6 +206,7 @@ editCertNameBox:any;
 editCertCategoryBox:any;
 
 openEditModal(cert, content){
+  this.editCert = cert;
   this.editCertNameBox = cert.certificationName;
   this.editCertCategoryBox = cert.certCategoryName;
   this.open(content);
