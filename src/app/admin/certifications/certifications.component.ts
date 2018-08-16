@@ -15,13 +15,13 @@ export class CertificationsComponent implements OnInit {
   constructor(private certificationService: CertificationService, private modalService:NgbModal) { }
   certifications:any;
   certificationsOpen = {};
-  certificationCategories: any;
+  certificationCategories: any; //these are generated based on the certifications
   certificationCategoriesOpen = {};
   searchedCertifications = [];
   searchedCertificationsOpen:any;
   searchableCertifications:any;
   createCertSuccess = false;
-  categories:any;
+  categories:any; //these come from the API
 
   ngOnInit() {
     this.getCertifications();
@@ -32,7 +32,6 @@ export class CertificationsComponent implements OnInit {
     this.certificationService.getCertificationCategories().subscribe(
       data => {this.categories = data},
       err => console.error(err),
-     
     )
   }
 
@@ -93,8 +92,6 @@ clearSearched(){
 clearSearchBox(){
   this.certificationSearchBox = '';
 }
-
-
 certificationSearchBox: any;
 certificationSearch = (text$: Observable<string>) =>
   text$.pipe(
@@ -107,15 +104,15 @@ formatter = (x: {certificationName: string}) => x.certificationName;
 
 //create certification Stuff
 createCertNameBox:any;
-createCertCategoryBox:any;
+createCertCategoryBox = null;
 
 closeCreateCertAlert(){
 this.createCertSuccess = false;
 }
 createCertification(){
-  if(this.createCertCategoryBox != undefined 
+  if(this.createCertCategoryBox != null 
       && this.createCertNameBox != "" 
-      && this.createCertNameBox != undefined){
+      && this.createCertNameBox != null){
     let newCert = new Certification();
     newCert.certificationName = this.createCertNameBox;
     newCert.certCategoryId = this.createCertCategoryBox.certCategoryId;
@@ -169,7 +166,6 @@ updateCertification(){
   updatedCert.certCategoryId = this.editCertCategoryBox.certCategoryId;
   updatedCert.certCategoryName = this.editCertCategoryBox.certCategoryName;
  
-  
   this.certificationService.updateCertification(updatedCert.certificationId, updatedCert.certificationName, updatedCert.certCategoryId).subscribe(
     data => {let x = data},
     err => console.error(err),
@@ -195,9 +191,7 @@ updateSkillDOM(updatedCert){
    this.searchedCertifications.splice(index, 1);
    this.searchedCertifications.push(updatedCert);
   }
-  
 }
-
 
 //Modal Stuff
 modalReference:any;
@@ -210,7 +204,6 @@ openEditModal(cert, content){
   this.editCertNameBox = cert.certificationName;
   this.editCertCategoryBox = cert.certCategoryName;
   this.open(content);
-
 }
 
 
@@ -232,7 +225,6 @@ private getDismissReason(reason: any): string {
     return  `with: ${reason}`;
   }
 }
-
 }
 
 

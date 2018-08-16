@@ -42,7 +42,6 @@ User:          any;
     
     this.User = await this.userService.getCurrentUser();
     console.log("User", this.User);
-   
   }
   
 //typeahead functions

@@ -34,9 +34,9 @@
                     </div>
                     <div class="col-auto" style="margin-left: auto;">
                       <h5>
-                      <i [ngClass]="{
-                        'fas fa-caret-up': skillTypesOpen[skillType],
-                        'fas fa-caret-down': !skillTypesOpen[skillType]}"></i>
+                      <i  class ="fas" [ngClass]="{
+                        'fa-caret-up': skillTypesOpen[skillType],
+                        'fa-caret-down': !skillTypesOpen[skillType]}"></i>
                        </h5>
                     </div>
                   </div>
@@ -79,9 +79,9 @@
                       </div>
                       <div class="col-auto" style="margin-left: auto;">
                         <h5>
-                        <i [ngClass]="{
-                          'fas fa-caret-up': certificationCategoriesOpen[certCategory],
-                          'fas fa-caret-down': !certificationCategoriesOpen[certCategory]}"></i>
+                        <i class ="fas" [ngClass]="{
+                          'fa-caret-up': certificationCategoriesOpen[certCategory],
+                          'fa-caret-down': !certificationCategoriesOpen[certCategory]}"></i>
                          </h5>
                       </div>
                     </div>
@@ -142,10 +142,6 @@
                   <div *ngIf = "addSkillSuccess" style="margin-top: 15px;">
                       <ngb-alert type="success" (close)="closeSkillAlert()">Skill Added</ngb-alert>
                   </div>
-                  
-
-
-
                </div>
               </ng-template>
             </ngb-tab>
@@ -164,9 +160,9 @@
                               </div>
                               <div class="col-auto" style="margin-left: auto;">
                                 <h5>
-                                <i [ngClass]="{
-                                  'fas fa-caret-up': skillTypesOpen[skillType],
-                                  'fas fa-caret-down': !skillTypesOpen[skillType]}"></i>
+                                <i class = "fas" [ngClass]="{
+                                  'fa-caret-up': availableSkillTypesOpen[skillType],
+                                  'fa-caret-down': !availableSkillTypesOpen[skillType]}"></i>
                                  </h5>
                               </div>
                             </div>
@@ -243,9 +239,9 @@
                                 </div>
                                 <div class="col-auto" style="margin-left: auto;">
                                   <h5>
-                                  <i [ngClass]="{
-                                    'fas fa-caret-up': availableCertificationCategoriesOpen[certCategory],
-                                    'fas fa-caret-down': !availableCertificationCategoriesOpen[certCategory]}"></i>
+                                  <i class ="fas" [ngClass]="{
+                                    'fa-caret-up': availableCertificationCategoriesOpen[certCategory],
+                                    'fa-caret-down': !availableCertificationCategoriesOpen[certCategory]}"></i>
                                   </h5>
                                 </div>
                               </div>

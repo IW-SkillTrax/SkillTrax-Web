@@ -36,9 +36,9 @@
                         <h4 (click) = deleteSkill(skill.skillId)><i class="fas fa-trash-alt"></i></h4>
                       </div>
                       <div class="col-auto" style="margin-left: auto;" (click) = toggleSearchedSkillsOpen(skill.skillName)>
-                        <h5> <i [ngClass]="{
-                          'fas fa-caret-up': searchedSkillsOpen[skill.skillName],
-                          'fas fa-caret-down': !searchedSkillsOpen[skill.skillName]}"></i></h5>
+                        <h5> <i class ="fas" [ngClass]="{
+                          'fa-caret-up': searchedSkillsOpen[skill.skillName],
+                          'fa-caret-down': !searchedSkillsOpen[skill.skillName]}"></i></h5>
                       </div>
                     </div>
                   </div>
@@ -59,9 +59,11 @@
           <div style="margin: 30px">
             <input  (focus) = "clearNameBox()"class="form-control" placeholder="Skill Name" style="margin-bottom: 15px;" [(ngModel)] = "createSkillNameBox">
             <select class="form-control" style="margin-bottom: 15px;" [(ngModel)] = "createSkillTypeBox">
+                <option [ngValue] ="null" disabled>Skill Type</option>
               <option *ngFor ="let type of types" [ngValue]="type">{{type.skillTypeName}}</option>
             </select>
-            <select class="form-control" style="margin-bottom: 15px;" [(ngModel)] = "createSkillSolutionBox">
+            <select required class="form-control" style="margin-bottom: 15px;" [(ngModel)] = "createSkillSolutionBox">
+             <option [ngValue] ="null" disabled>Skill Solution</option>
               <option *ngFor = "let solution of solutions" [ngValue] = "solution">{{solution.solutionName}}</option>
             </select>
             <button class="btn is-blue text-white float-right" (click) = createSkill()>Create Skill</button>
@@ -88,9 +90,9 @@
               </div>
               <div class="col-auto" style="margin-left: auto;">
                 <h5>
-                  <i [ngClass]="{
-                    'fas fa-caret-up': skillTypesOpen[skillType],
-                    'fas fa-caret-down': !skillTypesOpen[skillType]}"></i>
+                  <i class ="fas" [ngClass]="{
+                    'fa-caret-up': skillTypesOpen[skillType],
+                    'fa-caret-down': !skillTypesOpen[skillType]}"></i>
                 </h5>
               </div>
             </div>
@@ -112,9 +114,9 @@
     <h4 (click)  = deleteSkill(skill.skillId)><i class="fas fa-trash-alt"></i></h4>
     </div>
     <div class="col-auto" style="margin-left: auto;" (click) = toggleSkillsOpen(skill.skillName)>
-    <h5> <i [ngClass]="{
-      'fas fa-caret-up': skillsOpen[skill.skillName],
-      'fas fa-caret-down': !skillsOpen[skill.skillName]}"></i></h5>
+    <h5><i class = "fas" [ngClass]="{
+      'fa-caret-up': skillsOpen[skill.skillName],
+      'fa-caret-down': !skillsOpen[skill.skillName]}"></i></h5>
     </div>
     </div>
     </div>

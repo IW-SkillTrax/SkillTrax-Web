@@ -33,6 +33,7 @@ solutions = [
   ngOnInit() {
     this.getSkills()
     this.getTypes()
+
   }
   getTypes(){
     this.skillService.getSkillTypes().subscribe(
@@ -116,13 +117,13 @@ closeCreateSkillAlert(){
   this.createSkillSuccess = false;
 }
 createSkillNameBox:any;
-createSkillTypeBox:any;
-createSkillSolutionBox:any;
+createSkillTypeBox = null;
+createSkillSolutionBox = null;
 
 createSkill(){
  //TODO: validate Name
- if(this.createSkillTypeBox != undefined 
-    && this.createSkillSolutionBox != undefined 
+ if(this.createSkillTypeBox != null 
+    && this.createSkillSolutionBox != null 
     && this.createSkillNameBox != "" 
     && this.createSkillNameBox != undefined){
  let newSkill = new Skill();
@@ -248,7 +249,4 @@ private getDismissReason(reason: any): string {
     return  `with: ${reason}`;
   }
 }
-
-
-
 }

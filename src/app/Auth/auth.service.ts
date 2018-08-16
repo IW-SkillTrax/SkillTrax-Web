@@ -13,8 +13,8 @@ export class AuthService {
 private _user=null;
 
 private _config = {
-  tenant: 'c4a2137e-4842-4ed8-ac8b-ec94ed409a4d', //azure AD Directory ID
-  clientId: 'e66ed2d7-d1b7-4031-9d2d-b3772bb84b04',//web app id registered at azure 
+  tenant: 'e478832f-c23e-4bc5-9a43-acb211fc2ed4', //azure AD Directory ID
+  clientId: 'e1f25731-934f-49c6-8f26-0b6da7164c3a',//web app id registered at azure 
   redirectUri: 'http://localhost:4200/auth-callback',
   postLogoutRedirectUri: 'http://localhost:4200'
 }

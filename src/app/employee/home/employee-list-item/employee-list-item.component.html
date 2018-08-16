@@ -15,9 +15,9 @@
           <h4 *ngIf="userIsAdmin" [routerLink] = "['/Profile', employee.employeeId]"><i class="far fa-edit"></i></h4>
       </div>
       <div class="col-sm-1">
-          <h4><i [ngClass]="{
-            'fas fa-caret-up': isOpen,
-            'fas fa-caret-down': !isOpen}">
+          <h4><i class ="fas" [ngClass]="{
+            'fa-caret-up': isOpen,
+            'fa-caret-down': !isOpen}">
           </i></h4>
       </div>
     </div>

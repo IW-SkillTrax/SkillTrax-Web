@@ -36,9 +36,9 @@
                         <h4 (click) = "deleteCertification(cert.certificationId)"><i class="fas fa-trash-alt"></i></h4>
                       </div>
                       <div class="col-auto" style="margin-left: auto;" (click) = toggleSearchedCertificationsOpen(cert.certificationName)>
-                        <h5> <i [ngClass]="{
-                          'fas fa-caret-up': searchedCertificationsOpen[cert.certificationName],
-                          'fas fa-caret-down': !searchedCertificationsOpen[cert.certificationName]}"></i></h5>
+                        <h5> <i class="fas" [ngClass]="{
+                          'fa-caret-up': searchedCertificationsOpen[cert.certificationName],
+                          'fa-caret-down': !searchedCertificationsOpen[cert.certificationName]}"></i></h5>
                       </div>
                     </div>
                   </div>
@@ -58,6 +58,7 @@
           <div style="margin: 30px">
             <input (focus) = "clearNameBox()" class="form-control" placeholder="Certification Name" style="margin-bottom: 15px;" [(ngModel)] = "createCertNameBox">
             <select class="form-control" style="margin-bottom: 15px;" [(ngModel)] = "createCertCategoryBox">
+              <option disabled [ngValue] ="null">Certification Category</option>
               <option *ngFor = "let category of categories" [ngValue] = "category">{{category.certCategoryName}}</option>
             </select>
             <button class="btn is-blue text-white float-right" (click) = createCertification()>Create Certification</button>
@@ -84,45 +85,45 @@
               </div>
               <div class="col-auto" style="margin-left: auto;">
                 <h5>
-                  <i [ngClass]="{
-                    'fas fa-caret-up': certificationCategoriesOpen[certCategory],
-                    'fas fa-caret-down': !certificationCategoriesOpen[certCategory]}"></i>
+                  <i class ="fas" [ngClass]="{
+                    'fa-caret-up': certificationCategoriesOpen[certCategory],
+                    'fa-caret-down': !certificationCategoriesOpen[certCategory]}"></i>
                 </h5>
               </div>
             </div>
           </div>
     </div>
     <div [hidden] = "!certificationCategoriesOpen[certCategory]" >
-    <ul class="item-list">
-    <li *ngFor="let cert of certifications" style="margin:0px; padding:0px;">
-    <div *ngIf="cert.certCategoryName == certCategory">
-    <div class="skill"  [ngClass]="{
-    'active-skill': certificationsOpen[cert.certificationName]}">
-    <div class="container-fluid">
-    <div class="row">
-    <div class="col-sm-8" (click) = toggleCertificationsOpen(cert.certificationName)><strong>{{cert.certificationName}}</strong></div>
-    <div class="col-sm-1" style="margin-left: auto;">
-    <h4 (click) = "openEditModal(cert, updateCertModal)"><i class="far fa-edit"></i></h4>
+      <ul class="item-list">
+        <li *ngFor="let cert of certifications" style="margin:0px; padding:0px;">
+          <div *ngIf="cert.certCategoryName == certCategory">
+            <div class="skill"  [ngClass]="{
+            'active-skill': certificationsOpen[cert.certificationName]}">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-sm-8" (click) = toggleCertificationsOpen(cert.certificationName)><strong>{{cert.certificationName}}</strong></div>
+                  <div class="col-sm-1" style="margin-left: auto;">
+                    <h4 (click) = "openEditModal(cert, updateCertModal)"><i class="far fa-edit"></i></h4>
+                  </div>
+                  <div class="col-sm-1" style="margin-left: auto;">
+                    <h4 (click) = "deleteCertification(cert.certificationId)"><i class="fas fa-trash-alt"></i></h4>
+                  </div>
+                  <div class="col-auto" style="margin-left: auto;" (click) = toggleCertificationsOpen(cert.certificationName)>
+                    <h5> <i class ="fas" [ngClass]="{
+                    'fa-caret-up': certificationsOpen[cert.certificationName],
+                    'fa-caret-down': !certificationsOpen[cert.certificationName]}"></i></h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div [hidden] = "!certificationsOpen[cert.certificationName]" class="panel">
+              <p>Id: {{cert.certificationId}}</p> 
+              <p>Category: {{cert.certCategoryName}}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
-    <div class="col-sm-1" style="margin-left: auto;">
-    <h4 (click) = "deleteCertification(cert.certificationId)"><i class="fas fa-trash-alt"></i></h4>
-    </div>
-    <div class="col-auto" style="margin-left: auto;" (click) = toggleCertificationsOpen(cert.certificationName)>
-    <h5> <i [ngClass]="{
-      'fas fa-caret-up': certificationsOpen[cert.certificationName],
-      'fas fa-caret-down': !certificationsOpen[cert.certificationName]}"></i></h5>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div [hidden] = "!certificationsOpen[cert.certificationName]" class="panel">
-      <p>Id: {{cert.certificationId}}</p> 
-    <p>Category: {{cert.certCategoryName}}</p>
-    </div>
-    </div>
-    </li>
-    </ul>
-  </div>
   </li>
   </ul>
 </div>
